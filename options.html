@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Settings - Kimiya Kitani</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; padding: 25px; max-width: 850px; background: #f4f7f9; line-height: 1.6; color: #333; }
+    .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 25px; }
+    h2, h3 { color: #1a73e8; margin-top: 0; border-bottom: 2px solid #e8f0fe; padding-bottom: 10px; }
+    .field { margin-bottom: 20px; }
+    label { display: block; font-weight: bold; margin-bottom: 8px; }
+    input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1em; }
+    textarea { font-family: inherit; resize: vertical; min-height: 80px; }
+    button { padding: 15px; cursor: pointer; background: #1a73e8; color: white; border: none; border-radius: 8px; width: 100%; font-size: 1.1em; font-weight: bold; }
+    .btn-reset { background: #6c757d; font-size: 0.9em; padding: 10px; margin-bottom: 20px; }
+    .manual-section { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .guide-box { border-left: 6px solid #1a73e8; background: #f0f7ff; padding: 20px; margin-bottom: 25px; border-radius: 4px; }
+    .sim-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9em; }
+    .sim-table th, .sim-table td { border: 1px solid #eee; padding: 12px; text-align: left; }
+    .sim-table th { background: #f0f4ff; color: #1a73e8; }
+    .important { color: #d93025; font-weight: bold; }
+    .status-msg { font-weight: bold; text-align: center; margin-top: 15px; min-height: 1.5em; }
+    hr { border: 0; border-top: 1px solid #eee; margin: 25px 0; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2 id="ui-title">Gemini 設定マネージャー</h2>
+    <div class="field"><label id="label-ui-lang">UI Language</label><select id="uiLanguage"><option value="en">English</option><option value="ja">日本語(Japanese)</option></select></div>
+    <div class="field"><label id="label-api-key">Gemini API Key</label><input type="password" id="apiKey" placeholder="AIza..."></div>
+    <div class="field"><label id="label-model">Model Selection</label><select id="modelName"></select></div>
+    <div class="field"><label id="label-summary-mode">Summary Mode</label><select id="summaryMode"></select></div>
+    <div class="field"><label id="label-summary-lang">Output Language</label><select id="language"></select></div>
+    <div class="field"><label id="label-interval">Interval (sec) (Default: 30)</label><input type="number" id="interval" min="10" max="600" value="30"></div>
+    <div class="field"><label id="label-buffer">Min Chat Count(Default: 5)</label><input type="number" id="bufferThreshold" min="1" max="50" value="5"></div>    
+    <div class="field"><label id="label-max-chars">Max Input Characters (0 = Unlimited, If necessary, try starting with 1000 or 2000.)</label><input type="number" id="maxChars" min="0" step="100" value="0"></div>
+    <hr>
+    <h3 id="ui-prompt-title">カスタムプロンプト ({{LANG}} = 要約の出力言語)</h3>
+    <div class="field"><label id="label-prompt-simple">簡易版プロンプト</label><textarea id="promptSimple"></textarea></div>
+    <div class="field"><label id="label-prompt-detailed">詳細版プロンプト</label><textarea id="promptDetailed"></textarea></div>
+    <button type="button" id="resetPrompts" class="btn-reset">プロンプトをデフォルトに戻す</button>
+    <hr>
+
+    <button id="save">Save Settings</button>
+    <div id="status" class="status-msg"></div>
+  </div>
+  <div class="manual-section" id="manual-area"></div>
+  <script src="manual.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
