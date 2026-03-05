@@ -24,7 +24,8 @@ chrome.runtime.sendMessage({ type: "CHECK_PANEL_STATE" }, (res) => {
 chrome.storage.local.get(['summaryInterval', 'bufferThreshold', 'maxChars'], (data) => {
   currentSettings.summaryInterval = Number(data.summaryInterval) || 30;
   currentSettings.bufferThreshold = Number(data.bufferThreshold) || 5;
-  currentSettings.maxChars = Number(data.maxChars) || 0;
+  // data.maxChars が undefined の時だけ 2000 を代入。0 は 0 として維持される。
+  currentSettings.maxChars = Number(data.maxChars ?? 2000);
 });
 
 // 3. 設定のリアルタイム更新監視
@@ -32,7 +33,9 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   if (namespace === 'local') {
     if (changes.summaryInterval) currentSettings.summaryInterval = Number(changes.summaryInterval.newValue) || 30;
     if (changes.bufferThreshold) currentSettings.bufferThreshold = Number(changes.bufferThreshold.newValue) || 5;
-    if (changes.maxChars) currentSettings.maxChars = Number(changes.maxChars.newValue) || 0;
+    // ここも ?? を使うことで 0 への変更を正しく受け取れます
+    currentSettings.maxChars = Number(changes.maxChars.newValue ?? 2000);
+    
   }
 });
 

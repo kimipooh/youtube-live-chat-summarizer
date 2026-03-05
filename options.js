@@ -8,7 +8,7 @@ const DEFAULT_PROMPTS = {
 const UI_TEXT = {
   ja: {
     title: "Gemini 設定マネージャー",
-    labelApiKey: "Gemini API キー", labelModel: "使用モデルの選択", labelSummaryMode: "要約モード", labelSummaryLang: "要約の出力言語", labelInterval: "要約の間隔（秒）（デフォルト: 30）", labelUiLang: "UI表示言語", btnSave: "設定を保存して適用", statusOk: "✅ 保存完了！YouTubeをリロードしてください。", statusNg: "❌ APIキーを入力してください。",labelBuffer: "送信に必要な最小チャット数（デフォルト: 5）",labelMaxChars: "送信上限文字数 (0で無制限, 必要なら1000や2000あたりから試用おすすめ)",
+    labelApiKey: "Gemini API キー", labelModel: "使用モデルの選択", labelSummaryMode: "要約モード", labelSummaryLang: "要約の出力言語", labelInterval: "要約の間隔（秒）（デフォルト: 30）", labelUiLang: "UI表示言語", btnSave: "設定を保存して適用", statusOk: "✅ 保存完了！YouTubeをリロードしてください。", statusNg: "❌ APIキーを入力してください。",labelBuffer: "送信に必要な最小チャット数（デフォルト: 5）",labelMaxChars: "送信上限文字数 (デフォルト: 2000, 0 = 無制限, 1000や2000あたりから試用おすすめ)",
     modes: { simple: "簡易版 (トピック・熱量・変化を凝縮)", detailed: "詳細版 (熟練モデレーターによる深い分析)" },
     models: {
       // Gemini 3.1 / 3.0 Series (Latest Preview Models)
@@ -27,7 +27,7 @@ const UI_TEXT = {
   },
   en: {
     title: "Gemini Settings Manager",
-    labelApiKey: "Gemini API Key", labelModel: "Select AI Model", labelSummaryMode: "Summary Mode", labelSummaryLang: "Output Language", labelInterval: "Interval (sec) (Default: 30)", labelUiLang: "UI Language", btnSave: "Save Settings", statusOk: "✅ Saved! Please reload YouTube.", statusNg: "❌ API Key required.",labelBuffer: "Min Chat Count(Default: 5)",labelMaxChars: "Max Input Characters (0 = Unlimited, If necessary, try starting with 1000 or 2000.)",
+    labelApiKey: "Gemini API Key", labelModel: "Select AI Model", labelSummaryMode: "Summary Mode", labelSummaryLang: "Output Language", labelInterval: "Interval (sec) (Default: 30)", labelUiLang: "UI Language", btnSave: "Save Settings", statusOk: "✅ Saved! Please reload YouTube.", statusNg: "❌ API Key required.",labelBuffer: "Min Chat Count(Default: 5)",labelMaxChars: "Max Input Characters (Default: 2000, 0 = Unlimited, try starting with 1000 or 2000.)",
     modes: { simple: "Simple (Topics/Heat/Change condensed)", detailed: "Detailed (Deep analysis by expert moderator)" },
     /* options.js - English Model List for Global Users */
     models: {
@@ -166,7 +166,7 @@ chrome.storage.local.get(null, (d) => {
   if (d.summaryLanguage) document.getElementById('language').value = d.summaryLanguage;
   if (d.summaryInterval) document.getElementById('interval').value = d.summaryInterval;
   if (d.bufferThreshold) document.getElementById('bufferThreshold').value = d.bufferThreshold;
-  if (d.maxChars) document.getElementById('maxChars').value = d.maxChars;
+  document.getElementById('maxChars').value = (d.maxChars !== undefined) ? d.maxChars : 2000;
   // プロンプトの読み込み
   document.getElementById('promptSimple').value = d.promptSimple || DEFAULT_PROMPTS.simple;
   document.getElementById('promptDetailed').value = d.promptDetailed || DEFAULT_PROMPTS.detailed;
