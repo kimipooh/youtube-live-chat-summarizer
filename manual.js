@@ -38,6 +38,19 @@ const MANUAL_CONTENT = {
         <tr><td><strong>2.5 Flash</strong></td><td>中</td><td>速い</td><td>実績のある安定高速版</td></tr>
         <tr><td><strong>2.5 Flash-Lite</strong></td><td>標準</td><td>最速</td><td><strong>推奨：</strong>最速・最安</td></tr>
     </table>
+    <h3>🤖 推定コスト</h3>
+    <p>確定した料金（課金額）の反映は、数時間から１日程度のタイムラグがあるので注意してください。</p>
+    <p>以下は、2026年3月5日時点の<a target="_blank" href="https://ai.google.dev/gemini-api/docs/pricin">各モデルのコスト</a>と、下記の条件をもとにした推定価格です。あくまで推定であり、実際に消費したトークンや設定、複数のタグやウィンドウで利用するなどすると価格は変わってきます</p>
+    <p>実行間隔: 30秒に1回（1日 2,880回）<br>1回あたりの推定量: 入力 2,000トークン / 出力 200トークン<br>為替レート: 1ドル = 158円（想定）</p>
+    <table class="sim-table">
+        <tr><th>モデル名</th><th>通常入力 ($/1M)</th><th>通常出力 ($/1M)</th><th>1時間 (推測/円)</th><th>備考</th></tr>
+        <tr><td><strong>3.1 Pro</strong></td><td>$2.00</td><td>$12.00</td><td>約 121.3 円</td><td>1回のリクエストが 200kトークンを超えると単価が変動します</td></tr>
+        <tr><td><strong>3.1 Flash-Lite</strong></td><td>$0.25</td><td>$1.50</td><td>約 15.2 円</td><td>-</td></tr>
+        <tr><td><strong>3 Flash</strong></td><td>$0.50</td><td>$3.00</td><td>約 30.3 円</td><td>-</td></tr>
+        <tr><td><strong>2.5 Pro</strong></td><td>$1.25</td><td>$10.00</td><td>約 85.3 円</td><td>1回のリクエストが 200kトークンを超えると単価が変動します</td></tr>
+        <tr><td><strong>2.5 Flash</strong></td><td>$0.30</td><td>$2.50</td><td>約 20.9 円</td><td>-</td></tr>
+        <tr><td><strong>2.5 Flash-Lite</strong></td><td>$0.10</td><td>$0.40</td><td>約 5.3 円</td><td>-</td></tr>
+    </table>
   `,
   en: `
       <div class="guide-box">
@@ -68,6 +81,7 @@ const MANUAL_CONTENT = {
       <h3>🤖 Six Available Models</h3>
       <p>For more details, please refer to the <a target="_blank" href="https://ai.google.dev/gemini-api/docs/pricing">Gemini API Documentation</a>.</p>
       <p>More detailed documentation is available on <a target="_blank" href="https://github.com/kimipooh/youtube-live-chat-summarizer">GitHub</a></p>
+      <p>Please note that there may be a time lag of several hours to one day before the finalized charges are reflected in your account.</p>
       <table class="sim-table">
         <tr><th>Model Name</th><th>IQ (Intelligence)</th><th>Speed</th><th>Feature</th></tr>
         <tr><td><strong>3.1 Pro</strong></td><td>Highest</td><td>Slow</td><td>Best for deep professional analysis</td></tr>
@@ -77,5 +91,18 @@ const MANUAL_CONTENT = {
         <tr><td><strong>2.5 Flash</strong></td><td>Medium</td><td>Fast</td><td>Reliable and stable legacy version</td></tr>
         <tr><td><strong>2.5 Flash-Lite</strong></td><td>Standard</td><td>Fastest</td><td><strong>Recommended:</strong> Fastest & Cheapest</td></tr>
       </table>
+      <h3>🤖 Estimated Costs</h3>
+      <p>Please note that there may be a time lag of several hours to one day before the finalized charges are reflected in your account.</p>
+      <p>The following are estimated prices based on the <a target="_blank" href="https://ai.google.dev/gemini-api/docs/pricing">costs for each model</a> as of March 5, 2026, and the conditions below. These are only estimates; actual costs may vary depending on token consumption, settings, or use across multiple tags/windows.</p>
+      <p>Execution Interval: Once every 30 seconds (2,880 times per day)<br>Estimated Volume per Request: 2,000 Input Tokens / 200 Output Tokens<br>Exchange Rate: 1 USD = 150 JPY (Estimated)</p>
+      <table class="sim-table">
+        <tr><th>Model Name</th><th>Input ($/1M)</th><th>Output ($/1M)</th><th>Per Hour (Est. USD)</th><th>Notes</th></tr>
+        <tr><td><strong>3.1 Pro</strong></td><td>$2.00</td><td>$12.00</td><td>Approx. $0.768</td><td>Pricing changes to $4.00 (In) / $18.00 (Out) if a single request exceeds 200k tokens.</td></tr>
+        <tr><td><strong>3.1 Flash-Lite</strong></td><td>$0.25</td><td>$1.50</td><td>Approx. $0.096</td><td>-</td></tr>
+        <tr><td><strong>3 Flash</strong></td><td>$0.50</td><td>$3.00</td><td>Approx. $0.192</td><td>-</td></tr>
+        <tr><td><strong>2.5 Pro</strong></td><td>$1.25</td><td>$10.00</td><td>Approx. $0.540</td><td>Pricing changes to $2.50 (In) / $15.00 (Out) if a single request exceeds 200k tokens.</td></tr>
+        <tr><td><strong>2.5 Flash</strong></td><td>$0.30</td><td>$2.50</td><td>Approx. $0.132</td><td>-</td></tr>
+        <tr><td><strong>2.5 Flash-Lite</strong></td><td>$0.10</td><td>$0.40</td><td>Approx. $0.033</td><td>-</td></tr>
+     </table>
   `
 };
