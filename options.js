@@ -8,14 +8,27 @@ const DEFAULT_PROMPTS = {
 const UI_TEXT = {
   ja: {
     title: "Gemini 設定マネージャー",
-    labelApiKey: "Gemini API キー", labelModel: "使用モデルの選択", labelSummaryMode: "要約モード", labelSummaryLang: "要約の出力言語", labelInterval: "要約の間隔（秒）（デフォルト: 30）", labelUiLang: "UI表示言語", btnSave: "設定を保存して適用", statusOk: "✅ 保存完了！YouTubeをリロードしてください。", statusNg: "❌ APIキーを入力してください。",labelBuffer: "送信に必要な最小チャット数（デフォルト: 5）",labelMaxChars: "送信上限文字数 (デフォルト: 2000, 0 = 無制限, 1000や2000あたりから試用おすすめ)",
+    labelApiKey: "Gemini API キー", 
+    labelModel: "使用モデルの選択", 
+    labelManualModel: "モデルコードの手動指定 (優先)", 
+    manualModelHelp: "手動入力がある場合、上の選択より優先されます。利用可能なコードは <a href='https://ai.google.dev/gemini-api/docs/models' target='_blank'>Google公式サイト</a> を参照してください。",
+    labelThinkingLevel: "思考レベル (Thinking Level: 3.x系モデルのみ)",
+    thinkingLevels: { "0": "なし (標準)", "1": "低 (軽い推論)", "2": "中 (バランス)", "3": "高 (深い分析)" },
+    labelSummaryMode: "要約モード", 
+    labelSummaryLang: "要約の出力言語", 
+    labelInterval: "要約の間隔（秒）（デフォルト: 30）", 
+    labelUiLang: "UI表示言語", 
+    btnSave: "設定を保存して適用", 
+    statusOk: "✅ 保存完了！YouTubeをリロードしてください。", 
+    statusNg: "❌ APIキーを入力してください。",
+    // ラベルの改善: 動作内容がわかるように変更
+    labelBuffer: "要約を開始する最小チャット数（この数に達するまで送信を待機します）",
+    labelMaxChars: "1回あたりの最大解析文字数（コスト節約のため、超過分はカットして送信します）",
     modes: { simple: "簡易版 (トピック・熱量・変化を凝縮)", detailed: "詳細版 (熟練モデレーターによる深い分析)" },
     models: {
-      // Gemini 3.1 / 3.0 Series (Latest Preview Models)
-    　"gemini-3.1-pro-preview": "Gemini 3.1 Pro (最高知能 / 遅い / 専門分析)",
+      "gemini-3.1-pro-preview": "Gemini 3.1 Pro (最高知能 / 遅い / 専門分析)",
       "gemini-3.1-flash-lite-preview": "Gemini 3.1 Flash-Lite (高い知能 / 高速 / 最新バランス)",
       "gemini-3-flash-preview": "Gemini 3 Flash (中程度の知能 / 高速 / 汎用高速)",
-      // Gemini 2.5 Series (Stable Legacy Models)
       "gemini-2.5-pro": "Gemini 2.5 Pro (高知能 / 遅い / 安定・高精度)",
       "gemini-2.5-flash": "Gemini 2.5 Flash (中程度の知能 / 高速 / 安定高速)",
       "gemini-2.5-flash-lite": "Gemini 2.5 Flash-Lite (標準知能 / 最速 / 推奨・最安)"
@@ -27,16 +40,27 @@ const UI_TEXT = {
   },
   en: {
     title: "Gemini Settings Manager",
-    labelApiKey: "Gemini API Key", labelModel: "Select AI Model", labelSummaryMode: "Summary Mode", labelSummaryLang: "Output Language", labelInterval: "Interval (sec) (Default: 30)", labelUiLang: "UI Language", btnSave: "Save Settings", statusOk: "✅ Saved! Please reload YouTube.", statusNg: "❌ API Key required.",labelBuffer: "Min Chat Count(Default: 5)",labelMaxChars: "Max Input Characters (Default: 2000, 0 = Unlimited, try starting with 1000 or 2000.)",
+    labelApiKey: "Gemini API Key", 
+    labelModel: "Select AI Model", 
+    labelManualModel: "Manual Model Code (Priority)", 
+    manualModelHelp: "If entered, this overrides the selection above. Find codes at <a href='https://ai.google.dev/gemini-api/docs/models' target='_blank'>Google Official Docs</a>.",
+    labelThinkingLevel: "Thinking Level (Gemini 3.x models only)",
+    thinkingLevels: { "0": "None (Standard)", "1": "Low (Light Reasoning)", "2": "Medium (Balanced)", "3": "High (Deep Analysis)" },
+    labelSummaryMode: "Summary Mode", 
+    labelSummaryLang: "Output Language", 
+    labelInterval: "Interval (sec) (Default: 30)", 
+    labelUiLang: "UI Language", 
+    btnSave: "Save Settings", 
+    statusOk: "✅ Saved! Please reload YouTube.", 
+    statusNg: "❌ API Key required.",
+    // Label improvements for English
+    labelBuffer: "Min Chat Count to Trigger (Waits until this many messages accumulate)",
+    labelMaxChars: "Max Input Characters per Request (Cuts excess to save API costs)",
     modes: { simple: "Simple (Topics/Heat/Change condensed)", detailed: "Detailed (Deep analysis by expert moderator)" },
-    /* options.js - English Model List for Global Users */
     models: {
-      // Gemini 3.1 / 3.0 Series (Latest Preview Models)
       "gemini-3.1-pro-preview": "Gemini 3.1 Pro (Highest IQ / Slow / Specialist)",
       "gemini-3.1-flash-lite-preview": "Gemini 3.1 Flash-Lite (High IQ / Fast / Latest Balance)",
       "gemini-3-flash-preview": "Gemini 3 Flash (Medium IQ / Fast / General High-speed)",
-
-      // Gemini 2.5 Series (Stable Legacy Models)
       "gemini-2.5-pro": "Gemini 2.5 Pro (High IQ / Slow / Stable & Precise)",
       "gemini-2.5-flash": "Gemini 2.5 Flash (Medium IQ / Fast / Stable & Fast)",
       "gemini-2.5-flash-lite": "Gemini 2.5 Flash-Lite (Standard IQ / Fastest / Recommended)"
@@ -48,7 +72,6 @@ const UI_TEXT = {
   }
 };
 
-/* options.js - Author: Kimiya Kitani (Full Language Support Update) */
 const LANGUAGE_LIST = [
   { group: "Standard", langs: [["Japanese", "日本語"], ["English", "English"], ["Both Japanese and English", "日本語 & 英語"]] },
   { group: "Asia & Pacific", langs: [
@@ -80,6 +103,31 @@ function applyUi(lang) {
   document.getElementById('ui-title').innerText = t.title;
   document.getElementById('label-api-key').innerText = t.labelApiKey;
   document.getElementById('label-model').innerText = t.labelModel;
+  
+  const lManual = document.getElementById('label-manual-model');
+  if(lManual) lManual.innerText = t.labelManualModel;
+  
+  const hManual = document.getElementById('manual-model-help');
+  if(hManual) hManual.innerHTML = t.manualModelHelp;
+  
+  const lThinking = document.getElementById('label-thinking-level');
+  if(lThinking) lThinking.innerText = t.labelThinkingLevel;
+
+  const tLevel = document.getElementById('thinkingLevel');
+  if (tLevel) {
+    const currentLevel = tLevel.value;
+    tLevel.innerHTML = "";
+    if (t.thinkingLevels) {
+      for (const [val, txt] of Object.entries(t.thinkingLevels)) {
+        const opt = document.createElement('option'); 
+        opt.value = val; 
+        opt.innerText = txt; 
+        tLevel.appendChild(opt);
+      }
+      tLevel.value = currentLevel || "0";
+    }
+  }
+
   document.getElementById('label-summary-mode').innerText = t.labelSummaryMode;
   document.getElementById('label-summary-lang').innerText = t.labelSummaryLang;
   document.getElementById('label-interval').innerText = t.labelInterval;
@@ -87,15 +135,16 @@ function applyUi(lang) {
   document.getElementById('label-ui-lang').innerText = t.labelUiLang;
   document.getElementById('save').innerText = t.btnSave;
   document.getElementById('label-max-chars').innerText = t.labelMaxChars;
-  
-  // プロンプト用UIの適用
+
   document.getElementById('ui-prompt-title').innerText = t.promptTitle;
   document.getElementById('label-prompt-simple').innerText = t.labelPromptSimple;
   document.getElementById('label-prompt-detailed').innerText = t.labelPromptDetailed;
   document.getElementById('resetPrompts').innerText = t.btnReset;
 
-  // マニュアル領域の流し込み（manual.jsから）
-  document.getElementById('manual-area').innerHTML = MANUAL_CONTENT[lang] || MANUAL_CONTENT.en;
+  const manualArea = document.getElementById('manual-area');
+  if (manualArea && typeof MANUAL_CONTENT !== 'undefined') {
+      manualArea.innerHTML = MANUAL_CONTENT[lang] || MANUAL_CONTENT.en;
+  }
 
   const mMode = document.getElementById('summaryMode'); 
   const currentMode = mMode.value; 
@@ -126,7 +175,8 @@ function applyUi(lang) {
     });
     lSel.appendChild(group);
   });
-  lSel.value = currentLang || 'English';
+  // 初期読み込み時のデフォルトを Japanese に設定
+  lSel.value = currentLang || 'Japanese';
 }
 
 document.getElementById('uiLanguage').addEventListener('change', (e) => applyUi(e.target.value));
@@ -140,6 +190,8 @@ document.getElementById('save').addEventListener('click', () => {
     uiLanguage: ui, 
     geminiApiKey: key, 
     geminiModel: document.getElementById('modelName').value,
+    manualModel: document.getElementById('manualModel') ? document.getElementById('manualModel').value.trim() : "",
+    thinkingLevel: document.getElementById('thinkingLevel') ? parseInt(document.getElementById('thinkingLevel').value, 10) : 0,
     summaryMode: document.getElementById('summaryMode').value, 
     summaryInterval: parseInt(document.getElementById('interval').value, 10),
     bufferThreshold: parseInt(document.getElementById('bufferThreshold').value, 10),
@@ -158,16 +210,28 @@ document.getElementById('resetPrompts').addEventListener('click', () => {
 function showStatus(txt, col) { const s = document.getElementById('status'); s.innerText = txt; s.style.color = col; setTimeout(() => s.innerText = "", 3000); }
 
 chrome.storage.local.get(null, (d) => { 
-  applyUi(d.uiLanguage || 'en'); 
+  // デフォルト UI を ja (日本語) に設定
+  applyUi(d.uiLanguage || 'ja'); 
   if (d.uiLanguage) document.getElementById('uiLanguage').value = d.uiLanguage;
   if (d.geminiApiKey) document.getElementById('apiKey').value = d.geminiApiKey;
   if (d.geminiModel) document.getElementById('modelName').value = d.geminiModel;
+  
+  if (d.manualModel !== undefined && document.getElementById('manualModel')) {
+      document.getElementById('manualModel').value = d.manualModel;
+  }
+  if (d.thinkingLevel !== undefined && document.getElementById('thinkingLevel')) {
+      document.getElementById('thinkingLevel').value = d.thinkingLevel;
+  }
+  
   if (d.summaryMode) document.getElementById('summaryMode').value = d.summaryMode;
+  // デフォルト要約言語を Japanese に設定
   if (d.summaryLanguage) document.getElementById('language').value = d.summaryLanguage;
+  else document.getElementById('language').value = 'Japanese';
+
   if (d.summaryInterval) document.getElementById('interval').value = d.summaryInterval;
   if (d.bufferThreshold) document.getElementById('bufferThreshold').value = d.bufferThreshold;
   document.getElementById('maxChars').value = (d.maxChars !== undefined) ? d.maxChars : 2000;
-  // プロンプトの読み込み
+  
   document.getElementById('promptSimple').value = d.promptSimple || DEFAULT_PROMPTS.simple;
   document.getElementById('promptDetailed').value = d.promptDetailed || DEFAULT_PROMPTS.detailed;
 });

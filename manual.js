@@ -51,6 +51,17 @@ const MANUAL_CONTENT = {
         <tr><td><strong>2.5 Flash</strong></td><td>$0.30</td><td>$2.50</td><td>約 20.9 円</td><td>-</td></tr>
         <tr><td><strong>2.5 Flash-Lite</strong></td><td>$0.10</td><td>$0.40</td><td>約 5.3 円</td><td>-</td></tr>
     </table>
+
+    <h3>🧠 思考レベル (Thinking Level) を有効にした場合の推定コスト</h3>
+    <p>Gemini 3.x系モデルで「思考レベル」を有効にすると、最終的な回答を出す前にAIが「思考プロセス」を生成します。<strong>この思考プロセスは「出力トークン」として課金される</strong>ため、レベルを上げるほどコストが増加します。</p>
+    <p>※以下の表は、通常の出力(200トークン)に加えて、思考レベルごとに以下の追加トークンが発生したと仮定した1時間あたりの推定値です。<br>（Low: +200, Medium: +500, High: +1,000 トークン）</p>
+    <table class="sim-table">
+        <tr><th>モデル名 (3.x系のみ)</th><th>None (標準)</th><th>Low (軽い推論)</th><th>Medium (バランス)</th><th>High (深い分析)</th></tr>
+        <tr><td><strong>3.1 Pro</strong></td><td>約 121.3 円</td><td>約 166.8 円</td><td>約 235.1 円</td><td>約 348.9 円</td></tr>
+        <tr><td><strong>3.1 Flash-Lite</strong></td><td>約 15.2 円</td><td>約 20.9 円</td><td>約 29.4 円</td><td>約 43.6 円</td></tr>
+        <tr><td><strong>3 Flash</strong></td><td>約 30.3 円</td><td>約 41.7 円</td><td>約 58.8 円</td><td>約 87.2 円</td></tr>
+    </table>
+    <p>※Gemini 2.5シリーズは思考機能に非対応のため、設定を変更してもコストは変わりません。</p>
   `,
   en: `
       <div class="guide-box">
@@ -104,5 +115,16 @@ const MANUAL_CONTENT = {
         <tr><td><strong>2.5 Flash</strong></td><td>$0.30</td><td>$2.50</td><td>Approx. $0.132</td><td>-</td></tr>
         <tr><td><strong>2.5 Flash-Lite</strong></td><td>$0.10</td><td>$0.40</td><td>Approx. $0.033</td><td>-</td></tr>
      </table>
+
+      <h3>🧠 Estimated Costs with Thinking Level Enabled</h3>
+      <p>When you enable the "Thinking Level" for Gemini 3.x models, the AI generates a "thought process" before outputting the final answer. <strong>These thought processes are billed as Output Tokens</strong>, meaning higher levels will increase your costs.</p>
+      <p>*The table below estimates the hourly cost assuming the following additional output tokens per request on top of the base 200 tokens:<br>(Low: +200, Medium: +500, High: +1,000 tokens)</p>
+      <table class="sim-table">
+        <tr><th>Model Name (3.x only)</th><th>None (Standard)</th><th>Low (Light)</th><th>Medium (Balanced)</th><th>High (Deep)</th></tr>
+        <tr><td><strong>3.1 Pro</strong></td><td>~$0.768 /hr</td><td>~$1.056 /hr</td><td>~$1.488 /hr</td><td>~$2.208 /hr</td></tr>
+        <tr><td><strong>3.1 Flash-Lite</strong></td><td>~$0.096 /hr</td><td>~$0.132 /hr</td><td>~$0.186 /hr</td><td>~$0.276 /hr</td></tr>
+        <tr><td><strong>3 Flash</strong></td><td>~$0.192 /hr</td><td>~$0.264 /hr</td><td>~$0.372 /hr</td><td>~$0.552 /hr</td></tr>
+      </table>
+      <p>*Gemini 2.5 series models do not support the Thinking feature, so their costs remain unchanged regardless of this setting.</p>
   `
 };

@@ -35,13 +35,35 @@ function handleUiUpdate(msg) {
 }
 
 function updateHeader() {
-  chrome.storage.local.get(['summaryInterval', 'uiLanguage', 'geminiModel'], (d) => {
+  // manualModel と thinkingLevel を追加取得
+  chrome.storage.local.get(['summaryInterval', 'uiLanguage', 'geminiModel', 'manualModel', 'thinkingLevel'], (d) => {
     const lang = d.uiLanguage || 'ja';
     const interval = d.summaryInterval || 30;
-    const model = d.geminiModel || 'gemini-2.5-flash-lite';
+    
+    // 手動入力モデルがあればそれを優先表示 (background.js と同じロジック)
+    const model = d.manualModel || d.geminiModel || 'gemini-2.5-flash-lite';
     const modelShortName = model.replace('gemini-', '').replace('-preview', '');
+    
     document.getElementById('header-interval').innerText = (lang === 'ja' ? '間隔: ' : 'Int: ') + interval + 's';
     document.getElementById('header-model').innerText = 'Model: ' + modelShortName;
+    
+    // 思考レベルの判定と表示用のテキスト生成
+    const isThinkingSupported = model.toLowerCase().includes('gemini-3');
+    const tLevel = Number(d.thinkingLevel);
+    let thinkingText = "";
+    
+    if (isThinkingSupported && tLevel > 0) {
+        const levelMapJa = { 1: "低", 2: "中", 3: "高" };
+        const levelMapEn = { 1: "Low", 2: "Med", 3: "High" };
+        const levelStr = lang === 'ja' ? (levelMapJa[tLevel] || tLevel) : (levelMapEn[tLevel] || tLevel);
+        thinkingText = (lang === 'ja' ? '思考: ' : 'Think: ') + levelStr;
+    }
+    
+    const thElement = document.getElementById('header-thinking');
+    if (thElement) {
+        thElement.innerText = thinkingText;
+    }
+
     document.getElementById('open-options').innerText = lang === 'ja' ? '設定 ⚙️' : 'Options ⚙️';
   });
 }

@@ -26,14 +26,31 @@
 <body>
   <div class="card">
     <h2 id="ui-title">Gemini 設定マネージャー</h2>
-    <div class="field"><label id="label-ui-lang">UI Language</label><select id="uiLanguage"><option value="en">English</option><option value="ja">日本語(Japanese)</option></select></div>
+    <div class="field"><label id="label-ui-lang">UI Language</label><select id="uiLanguage"><option value="ja">日本語(Japanese)</option><option value="en">English</option></select></div>
     <div class="field"><label id="label-api-key">Gemini API Key</label><input type="password" id="apiKey" placeholder="AIza..."></div>
     <div class="field"><label id="label-model">Model Selection</label><select id="modelName"></select></div>
+    
+    <div class="field">
+        <label id="label-manual-model"></label>
+        <input type="text" id="manualModel" placeholder="e.g., gemini-1.5-pro">
+        <small id="manual-model-help" style="display: block; margin-top: 5px; font-size: 0.8em; color: #666;"></small>
+    </div>
+    
+    <div class="field">
+        <label id="label-thinking-level"></label>
+        <select id="thinkingLevel">
+            <option value="0">None (Standard)</option>
+            <option value="1">Low (Light Reasoning)</option>
+            <option value="2">Medium (Balanced)</option>
+            <option value="3">High (Deep Analysis)</option>
+        </select>
+    </div>
+
     <div class="field"><label id="label-summary-mode">Summary Mode</label><select id="summaryMode"></select></div>
     <div class="field"><label id="label-summary-lang">Output Language</label><select id="language"></select></div>
     <div class="field"><label id="label-interval">Interval (sec) (Default: 30)</label><input type="number" id="interval" min="10" max="600" value="30"></div>
     <div class="field"><label id="label-buffer">Min Chat Count(Default: 5)</label><input type="number" id="bufferThreshold" min="1" max="50" value="5"></div>    
-    <div class="field"><label id="label-max-chars">Max Input Characters (Default: 2000, 0 = Unlimited, If necessary, try starting with 1000 or 2000.)</label><input type="number" id="maxChars" min="0" step="100" value="2000"></div>
+    <div class="field"><label id="label-max-chars"></label><input type="number" id="maxChars" min="0" step="100" value="2000"></div>
     <hr>
     <h3 id="ui-prompt-title">カスタムプロンプト ({{LANG}} = 要約の出力言語)</h3>
     <div class="field"><label id="label-prompt-simple">簡易版プロンプト</label><textarea id="promptSimple"></textarea></div>
