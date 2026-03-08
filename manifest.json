@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "YouTube Live Chat Summarizer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Real-time YouTube Live chat and replay summarization using Gemini AI. Supports 75+ languages with smart API quota saving.",
   "author": "Kimiya Kitani",
   "icons": {
@@ -12,8 +12,7 @@
   },
   "permissions": [
     "sidePanel",
-    "storage",
-    "tabs"
+    "storage"
   ],
   "host_permissions": [
     "https://*.google.com/*",
