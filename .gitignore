@@ -1,0 +1,11 @@
+# Claude / Codex
+.claude/
+.codex/
+
+# macOS
+.DS_Store
+
+# temporary
+*.log
+tmp/
+temp/
