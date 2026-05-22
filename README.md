@@ -3,7 +3,7 @@
 [English](README-en.md) | **日本語**
 
 - Author: Kimiya Kitani
-- Latest version: 1.0.1
+- Latest version: 1.1.0
 
 ## 概要
 
