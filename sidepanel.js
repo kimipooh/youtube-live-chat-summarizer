@@ -1,6 +1,18 @@
 /* sidepanel.js - ウィンドウ特定受信版 */
 let port = null;
 
+function getThinkingFamily(model) {
+  const normalized = (model || '').toLowerCase().trim();
+  if (normalized.startsWith('gemini-3')) return 'gemini3';
+  if (normalized.startsWith('gemini-2.5-pro')) return 'gemini25pro';
+  if (normalized.startsWith('gemini-2.5-flash')) return 'gemini25flash';
+  return 'none';
+}
+
+function isThinkingDisplaySupported(model) {
+  return getThinkingFamily(model) !== 'none';
+}
+
 // background.js との接続を確立し、メッセージを待機
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
   if (tabs[0]) {
@@ -48,13 +60,14 @@ function updateHeader() {
     document.getElementById('header-model').innerText = 'Model: ' + modelShortName;
     
     // 思考レベルの判定と表示用のテキスト生成
-    const isThinkingSupported = model.toLowerCase().includes('gemini-3');
-    const tLevel = Number(d.thinkingLevel);
+    const isThinkingSupported = isThinkingDisplaySupported(model);
+    const storedThinkingLevel = Number(d.thinkingLevel);
+    const tLevel = Number.isFinite(storedThinkingLevel) ? storedThinkingLevel : 0;
     let thinkingText = "";
     
-    if (isThinkingSupported && tLevel > 0) {
-        const levelMapJa = { 1: "低", 2: "中", 3: "高" };
-        const levelMapEn = { 1: "Low", 2: "Med", 3: "High" };
+    if (isThinkingSupported) {
+        const levelMapJa = { 0: "API既定", 1: "最小", 2: "低", 3: "中", 4: "高" };
+        const levelMapEn = { 0: "Default", 1: "Min", 2: "Low", 3: "Med", 4: "High" };
         const levelStr = lang === 'ja' ? (levelMapJa[tLevel] || tLevel) : (levelMapEn[tLevel] || tLevel);
         thinkingText = (lang === 'ja' ? '思考: ' : 'Think: ') + levelStr;
     }

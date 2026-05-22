@@ -31,37 +31,30 @@ const MANUAL_CONTENT = {
     <p>より詳細ドキュメントは、<a target="_blank" href="https://github.com/kimipooh/youtube-live-chat-summarizer">GitHUBで公開</a>しています</p>
     <table class="sim-table">
         <tr><th>モデル名</th><th>知能 (IQ)</th><th>速度</th><th>特徴</th></tr>
-        <tr><td><strong>3.1 Pro</strong></td><td>最高</td><td>遅い</td><td>専門的な深い分析に</td></tr>
-        <tr><td><strong>3.1 Flash-Lite</strong></td><td>高い</td><td>速い</td><td>最新の高速バランス型</td></tr>
-        <tr><td><strong>3 Flash</strong></td><td>中</td><td>速い</td><td>汎用的な高速モデル</td></tr>
-        <tr><td><strong>2.5 Pro</strong></td><td>最高</td><td>遅い</td><td>安定した高精度な分析</td></tr>
-        <tr><td><strong>2.5 Flash</strong></td><td>中</td><td>速い</td><td>実績のある安定高速版</td></tr>
-        <tr><td><strong>2.5 Flash-Lite</strong></td><td>標準</td><td>最速</td><td><strong>推奨：</strong>最速・最安</td></tr>
+        <tr><td><strong>Gemini 2.5 Flash-Lite</strong></td><td>標準</td><td>最速</td><td><strong>推奨：</strong>最速・最安</td></tr>
+        <tr><td><strong>Gemini 2.5 Flash</strong></td><td>中</td><td>速い</td><td>安定した高速モデル</td></tr>
+        <tr><td><strong>Gemini 2.5 Pro</strong></td><td>高い</td><td>遅い</td><td>安定した高精度な分析</td></tr>
+        <tr><td><strong>Gemini 3.1 Flash-Lite</strong></td><td>高い</td><td>速い</td><td>Stable の高速モデル</td></tr>
+        <tr><td><strong>Gemini 3.5 Flash</strong></td><td>高い</td><td>速い</td><td>Stable。未指定時の thinking default に注意</td></tr>
+        <tr><td><strong>Gemini 3.1 Pro Preview</strong></td><td>最高</td><td>遅い</td><td>Preview。高度な分析向けだが高コスト</td></tr>
     </table>
-    <h3>🤖 推定コスト</h3>
+    <h3>🤖 コストの相対比較</h3>
     <p>確定した料金（課金額）の反映は、数時間から１日程度のタイムラグがあるので注意してください。</p>
-    <p>以下は、2026年3月5日時点の<a target="_blank" href="https://ai.google.dev/gemini-api/docs/pricing">各モデルのコスト</a>と、下記の条件をもとにした推定価格です。あくまで推定であり、実際に消費したトークンや設定、複数のタグやウィンドウで利用するなどすると価格は変わってきます</p>
-    <p>実行間隔: 30秒に1回（1日 2,880回）<br>1回あたりの推定量: 入力 2,000トークン / 出力 200トークン<br>為替レート: 1ドル = 158円（想定）</p>
+    <p>料金は変動するため、固定金額ではなく Gemini 2.5 Flash-Lite を 1.0x とした相対倍率で考えるのが安全です。最新の単価は必ず <a target="_blank" href="https://ai.google.dev/gemini-api/docs/pricing">Gemini API Pricing</a> を確認してください。</p>
     <table class="sim-table">
-        <tr><th>モデル名</th><th>通常入力 ($/1M)</th><th>通常出力 ($/1M)</th><th>1時間 (推測/円)</th><th>備考</th></tr>
-        <tr><td><strong>3.1 Pro</strong></td><td>$2.00</td><td>$12.00</td><td>約 121.3 円</td><td>1回のリクエストが 200kトークンを超えると単価が変動します</td></tr>
-        <tr><td><strong>3.1 Flash-Lite</strong></td><td>$0.25</td><td>$1.50</td><td>約 15.2 円</td><td>-</td></tr>
-        <tr><td><strong>3 Flash</strong></td><td>$0.50</td><td>$3.00</td><td>約 30.3 円</td><td>-</td></tr>
-        <tr><td><strong>2.5 Pro</strong></td><td>$1.25</td><td>$10.00</td><td>約 85.3 円</td><td>1回のリクエストが 200kトークンを超えると単価が変動します</td></tr>
-        <tr><td><strong>2.5 Flash</strong></td><td>$0.30</td><td>$2.50</td><td>約 20.9 円</td><td>-</td></tr>
-        <tr><td><strong>2.5 Flash-Lite</strong></td><td>$0.10</td><td>$0.40</td><td>約 5.3 円</td><td>-</td></tr>
+        <tr><th>モデル名</th><th>input倍率</th><th>output / thinking倍率</th></tr>
+        <tr><td><strong>Gemini 2.5 Flash-Lite</strong></td><td>1.0x</td><td>1.0x</td></tr>
+        <tr><td><strong>Gemini 2.5 Flash</strong></td><td>3.0x</td><td>6.25x</td></tr>
+        <tr><td><strong>Gemini 2.5 Pro</strong></td><td>12.5x</td><td>25.0x</td></tr>
+        <tr><td><strong>Gemini 3.1 Flash-Lite</strong></td><td>2.5x</td><td>3.75x</td></tr>
+        <tr><td><strong>Gemini 3.5 Flash</strong></td><td>15.0x</td><td>22.5x</td></tr>
+        <tr><td><strong>Gemini 3.1 Pro Preview</strong></td><td>20.0x</td><td>30.0x</td></tr>
     </table>
 
-    <h3>🧠 思考レベル (Thinking Level) を有効にした場合の推定コスト</h3>
-    <p>Gemini 3.x系モデルで「思考レベル」を有効にすると、最終的な回答を出す前にAIが「思考プロセス」を生成します。<strong>この思考プロセスは「出力トークン」として課金される</strong>ため、レベルを上げるほどコストが増加します。</p>
-    <p>※以下の表は、通常の出力(200トークン)に加えて、思考レベルごとに以下の追加トークンが発生したと仮定した1時間あたりの推定値です。<br>（Low: +200, Medium: +500, High: +1,000 トークン）</p>
-    <table class="sim-table">
-        <tr><th>モデル名 (3.x系のみ)</th><th>None (標準)</th><th>Low (軽い推論)</th><th>Medium (バランス)</th><th>High (深い分析)</th></tr>
-        <tr><td><strong>3.1 Pro</strong></td><td>約 121.3 円</td><td>約 166.8 円</td><td>約 235.1 円</td><td>約 348.9 円</td></tr>
-        <tr><td><strong>3.1 Flash-Lite</strong></td><td>約 15.2 円</td><td>約 20.9 円</td><td>約 29.4 円</td><td>約 43.6 円</td></tr>
-        <tr><td><strong>3 Flash</strong></td><td>約 30.3 円</td><td>約 41.7 円</td><td>約 58.8 円</td><td>約 87.2 円</td></tr>
-    </table>
-    <p>※Gemini 2.5シリーズは思考機能に非対応のため、設定を変更してもコストは変わりません。</p>
+    <h3>🧠 思考レベル (Thinking Level) とコスト</h3>
+    <p>Gemini 3 系では <code>thinkingLevel</code>、Gemini 2.5 系では <code>thinkingBudget</code> を使って思考量を制御します。思考トークンは出力側のトークンとして扱われるため、思考レベルを上げるほどコストが増えやすくなります。</p>
+    <p><code>None</code> / API default は必ずしも「思考なし」ではありません。特に Gemini 3.5 Flash は未指定時に default medium になる点に注意してください。コストを最重視する場合は <code>Minimal</code> を推奨します。Gemini 2.5 Pro は <code>thinkingBudget: 0</code> を送れないため、<code>None</code> は API default、<code>Minimal</code> は最小 budget として扱います。</p>
+    <p>実際のコストは、<code>summaryInterval</code>（要約間隔）、<code>bufferThreshold</code>（送信に必要な最小チャット数）、<code>maxChars</code>（1回あたりの最大入力文字数）、<code>summaryMode</code>（簡易/詳細）、<code>thinkingLevel</code>（思考量）の影響を強く受けます。</p>
   `,
   en: `
       <div class="guide-box">
@@ -95,36 +88,29 @@ const MANUAL_CONTENT = {
       <p>Please note that there may be a time lag of several hours to one day before the finalized charges are reflected in your account.</p>
       <table class="sim-table">
         <tr><th>Model Name</th><th>IQ (Intelligence)</th><th>Speed</th><th>Feature</th></tr>
-        <tr><td><strong>3.1 Pro</strong></td><td>Highest</td><td>Slow</td><td>Best for deep professional analysis</td></tr>
-        <tr><td><strong>3.1 Flash-Lite</strong></td><td>High</td><td>Fast</td><td>Latest balanced high-speed model</td></tr>
-        <tr><td><strong>3 Flash</strong></td><td>Medium</td><td>Fast</td><td>General-purpose high-speed model</td></tr>
-        <tr><td><strong>2.5 Pro</strong></td><td>Highest</td><td>Slow</td><td>Stable and high-precision analysis</td></tr>
-        <tr><td><strong>2.5 Flash</strong></td><td>Medium</td><td>Fast</td><td>Reliable and stable legacy version</td></tr>
-        <tr><td><strong>2.5 Flash-Lite</strong></td><td>Standard</td><td>Fastest</td><td><strong>Recommended:</strong> Fastest & Cheapest</td></tr>
+        <tr><td><strong>Gemini 2.5 Flash-Lite</strong></td><td>Standard</td><td>Fastest</td><td><strong>Recommended:</strong> fastest and lowest cost</td></tr>
+        <tr><td><strong>Gemini 2.5 Flash</strong></td><td>Medium</td><td>Fast</td><td>Stable fast model</td></tr>
+        <tr><td><strong>Gemini 2.5 Pro</strong></td><td>High</td><td>Slow</td><td>Stable, high-accuracy analysis</td></tr>
+        <tr><td><strong>Gemini 3.1 Flash-Lite</strong></td><td>High</td><td>Fast</td><td>Stable fast model</td></tr>
+        <tr><td><strong>Gemini 3.5 Flash</strong></td><td>High</td><td>Fast</td><td>Stable. Note its default thinking behavior when unspecified</td></tr>
+        <tr><td><strong>Gemini 3.1 Pro Preview</strong></td><td>Highest</td><td>Slow</td><td>Preview. Best for advanced analysis, but high cost</td></tr>
       </table>
-      <h3>🤖 Estimated Costs</h3>
+      <h3>🤖 Relative Cost Comparison</h3>
       <p>Please note that there may be a time lag of several hours to one day before the finalized charges are reflected in your account.</p>
-      <p>The following are estimated prices based on the <a target="_blank" href="https://ai.google.dev/gemini-api/docs/pricing">costs for each model</a> as of March 5, 2026, and the conditions below. These are only estimates; actual costs may vary depending on token consumption, settings, or use across multiple tags/windows.</p>
-      <p>Execution Interval: Once every 30 seconds (2,880 times per day)<br>Estimated Volume per Request: 2,000 Input Tokens / 200 Output Tokens<br>Exchange Rate: 1 USD = 150 JPY (Estimated)</p>
+      <p>Because prices can change, it is safer to compare models by relative multipliers using Gemini 2.5 Flash-Lite as 1.0x. Always check the latest <a target="_blank" href="https://ai.google.dev/gemini-api/docs/pricing">Gemini API Pricing</a> page.</p>
       <table class="sim-table">
-        <tr><th>Model Name</th><th>Input ($/1M)</th><th>Output ($/1M)</th><th>Per Hour (Est. USD)</th><th>Notes</th></tr>
-        <tr><td><strong>3.1 Pro</strong></td><td>$2.00</td><td>$12.00</td><td>Approx. $0.768</td><td>Pricing changes to $4.00 (In) / $18.00 (Out) if a single request exceeds 200k tokens.</td></tr>
-        <tr><td><strong>3.1 Flash-Lite</strong></td><td>$0.25</td><td>$1.50</td><td>Approx. $0.096</td><td>-</td></tr>
-        <tr><td><strong>3 Flash</strong></td><td>$0.50</td><td>$3.00</td><td>Approx. $0.192</td><td>-</td></tr>
-        <tr><td><strong>2.5 Pro</strong></td><td>$1.25</td><td>$10.00</td><td>Approx. $0.540</td><td>Pricing changes to $2.50 (In) / $15.00 (Out) if a single request exceeds 200k tokens.</td></tr>
-        <tr><td><strong>2.5 Flash</strong></td><td>$0.30</td><td>$2.50</td><td>Approx. $0.132</td><td>-</td></tr>
-        <tr><td><strong>2.5 Flash-Lite</strong></td><td>$0.10</td><td>$0.40</td><td>Approx. $0.033</td><td>-</td></tr>
+        <tr><th>Model Name</th><th>Input multiplier</th><th>Output / thinking multiplier</th></tr>
+        <tr><td><strong>Gemini 2.5 Flash-Lite</strong></td><td>1.0x</td><td>1.0x</td></tr>
+        <tr><td><strong>Gemini 2.5 Flash</strong></td><td>3.0x</td><td>6.25x</td></tr>
+        <tr><td><strong>Gemini 2.5 Pro</strong></td><td>12.5x</td><td>25.0x</td></tr>
+        <tr><td><strong>Gemini 3.1 Flash-Lite</strong></td><td>2.5x</td><td>3.75x</td></tr>
+        <tr><td><strong>Gemini 3.5 Flash</strong></td><td>15.0x</td><td>22.5x</td></tr>
+        <tr><td><strong>Gemini 3.1 Pro Preview</strong></td><td>20.0x</td><td>30.0x</td></tr>
      </table>
 
-      <h3>🧠 Estimated Costs with Thinking Level Enabled</h3>
-      <p>When you enable the "Thinking Level" for Gemini 3.x models, the AI generates a "thought process" before outputting the final answer. <strong>These thought processes are billed as Output Tokens</strong>, meaning higher levels will increase your costs.</p>
-      <p>*The table below estimates the hourly cost assuming the following additional output tokens per request on top of the base 200 tokens:<br>(Low: +200, Medium: +500, High: +1,000 tokens)</p>
-      <table class="sim-table">
-        <tr><th>Model Name (3.x only)</th><th>None (Standard)</th><th>Low (Light)</th><th>Medium (Balanced)</th><th>High (Deep)</th></tr>
-        <tr><td><strong>3.1 Pro</strong></td><td>~$0.768 /hr</td><td>~$1.056 /hr</td><td>~$1.488 /hr</td><td>~$2.208 /hr</td></tr>
-        <tr><td><strong>3.1 Flash-Lite</strong></td><td>~$0.096 /hr</td><td>~$0.132 /hr</td><td>~$0.186 /hr</td><td>~$0.276 /hr</td></tr>
-        <tr><td><strong>3 Flash</strong></td><td>~$0.192 /hr</td><td>~$0.264 /hr</td><td>~$0.372 /hr</td><td>~$0.552 /hr</td></tr>
-      </table>
-      <p>*Gemini 2.5 series models do not support the Thinking feature, so their costs remain unchanged regardless of this setting.</p>
+      <h3>🧠 Thinking Level and Cost</h3>
+      <p>Gemini 3 models use <code>thinkingLevel</code>, while Gemini 2.5 models use <code>thinkingBudget</code> to control reasoning effort. Thinking tokens are treated as output-side tokens, so higher thinking levels can increase cost.</p>
+      <p><code>None</code> / API default does not always mean "no thinking"; in particular, Gemini 3.5 Flash may default to medium when unspecified. If cost is the top priority, use <code>Minimal</code>. Gemini 2.5 Pro cannot receive <code>thinkingBudget: 0</code>, so <code>None</code> is treated as API default and <code>Minimal</code> uses the minimum budget.</p>
+      <p>Actual cost depends strongly on <code>summaryInterval</code>, <code>bufferThreshold</code>, <code>maxChars</code>, <code>summaryMode</code>, and <code>thinkingLevel</code>.</p>
   `
 };

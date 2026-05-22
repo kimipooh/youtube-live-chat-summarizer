@@ -11,6 +11,36 @@ const DEFAULT_PROMPTS = {
   detailed: "STRICT RULE: Output in {{LANG}} only. Analyze the chat in detail.\nSTRICT RULE: DO NOT use bolding (**) or italics (*). You may use Markdown headers (## or ###) ONLY for section titles, NEVER within paragraphs or lists.\n\nChat Data:\n"
 };
 
+function getThinkingFamily(model) {
+  const normalized = (model || '').toLowerCase().trim();
+  if (normalized.startsWith('gemini-3')) return 'gemini3';
+  if (normalized.startsWith('gemini-2.5-pro')) return 'gemini25pro';
+  if (normalized.startsWith('gemini-2.5-flash')) return 'gemini25flash';
+  return 'none';
+}
+
+function buildThinkingConfig(model, thinkingLevel) {
+  const level = Number(thinkingLevel) || 0;
+  const family = getThinkingFamily(model);
+
+  if (family === 'gemini3') {
+    const levelMap = { 1: 'minimal', 2: 'low', 3: 'medium', 4: 'high' };
+    return levelMap[level] ? { thinkingLevel: levelMap[level] } : null;
+  }
+
+  if (family === 'gemini25flash') {
+    const budgetMap = { 0: 0, 1: 0, 2: 1024, 3: 4096, 4: 8192 };
+    return Object.prototype.hasOwnProperty.call(budgetMap, level) ? { thinkingBudget: budgetMap[level] } : null;
+  }
+
+  if (family === 'gemini25pro') {
+    const budgetMap = { 1: 128, 2: 1024, 3: 4096, 4: 8192 };
+    return budgetMap[level] ? { thinkingBudget: budgetMap[level] } : null;
+  }
+
+  return null;
+}
+
 chrome.runtime.onConnect.addListener((port) => {
   if (port.name === "sidepanel") {
     chrome.windows.getCurrent({populate: false}, (win) => {
@@ -65,14 +95,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         contents: [{ parts: [{ text: prompt }] }]
       };
 
-      // 思考レベル設定 (gemini-3.x系のみ有効化)
-      const isThinkingSupported = model.toLowerCase().includes('gemini-3');
-      if (isThinkingSupported && data.thinkingLevel && Number(data.thinkingLevel) > 0) {
-        const levelMap = { 1: "low", 2: "medium", 3: "high" };
+      const thinkingConfig = buildThinkingConfig(model, data.thinkingLevel);
+      if (thinkingConfig) {
         requestBody.generationConfig = {
-          thinkingConfig: {
-            thinkingLevel: levelMap[Number(data.thinkingLevel)] || "high"
-          }
+          thinkingConfig
         };
       }
 

@@ -9,7 +9,7 @@
 
 This extension uses the Google Gemini API to summarize YouTube Live chats and Archives in real-time. It is designed as a Multi-Channel Monitor—summaries are strictly delivered to the side panel of the same window, preventing data from mixing between multiple open streams.
 
-Additionally, you can freely customize both "Simplified" and "Detailed" prompt versions through the settings menu. It also supports manual model code entry and the Thinking process for the latest Gemini 3.x series.
+Additionally, you can freely customize both "Simplified" and "Detailed" prompt versions through the settings menu. It also supports Thinking settings for supported models and manual model code entry.
 
 ## 🔒 Data Privacy & Security
 
@@ -45,8 +45,8 @@ This step is not required if you have already installed the application via the 
 6. Once **YouTube Live Chat Summarizer** appears in your extensions, open the **Options** menu. Follow the instructions provided to create and set your API Key.
 7. Complete the required initial settings:
    - **UI Language:** Japanese is set by default, but English is also fully supported.
-   - **AI Model:** Gemini 2.5 Flash Lite is set by default. While Gemini 3.1 Pro is available, please note it is significantly more expensive. You can also manually specify model codes to use newer or preview models.
-   - **Thinking Level:** When using Gemini 3.x series models, you can adjust the "Thinking Level" for deeper analysis.
+   - **AI Model:** Gemini 2.5 Flash-Lite is set by default. Gemini 3.1 Pro Preview is available, but higher-performance models cost more. You can also manually specify model codes to use newer or preview models.
+   - **Thinking Level:** Supported models can use "Thinking Level" to tune the balance between cost and response quality.
    - **Output Mode:** Choose between "Simplified" and "Detailed" versions. Each can be customized in the options. The `{{LANG}}` placeholder will automatically insert your selected output language.
    - **Output Language:** Based on [languages supported by Gemini](https://support.google.com/gemini/answer/13575153) (as of late February 2026). The default is set to Japanese; please change it to English or your preferred language as needed.
 
@@ -66,11 +66,11 @@ If you are concerned about potential costs—for instance, when running the exte
 
 As of February 2026, the free tier of the Gemini API without billing enabled is highly restrictive, making it practically unusable for consistent performance.
 
-Without billing, you are limited to approximately 20 requests per day ([Rate Limits](https://ai.google.dev/gemini-api/docs/rate-limits)), which often causes the service to halt quickly during testing. By enabling billing, this limit jumps to several thousand RPM (Requests Per Minute), effectively eliminating most constraints. This allows you to adopt a strategy of "primarily staying within the free quota (with a registered billing account) while paying just a few cents to keep it running if the limit is exceeded."
+Without billing, the [rate limits](https://ai.google.dev/gemini-api/docs/rate-limits) are strict, which often causes the service to halt quickly during testing. By enabling billing, the limits are relaxed, making it easier to avoid interruptions. This allows you to primarily stay within the free quota while using the paid tier only when needed for stability.
 
 Furthermore, in the standard free tier, your input and output data may be used by Google to improve their models (training). Once you enable billing, this concern is removed. For more information, please refer to the [Gemini API Additional Terms of Service](https://ai.google.dev/gemini-api/terms).
 
-Even after registering for billing, a free monthly quota (approximately 1 to 1.5 million tokens) still applies. In particular, Gemini 2.5 Flash Lite is exceptionally affordable; even if you exceed the free tier, the rates are as low as $0.10 for input and $0.40 for output per 1 million tokens.
+Even after registering for billing, a free monthly quota still applies. Gemini 2.5 Flash-Lite is the lowest-cost baseline model and is well suited for long-running stream monitoring.
 
 ## 2. Usage: Pinning & Starting
 
@@ -96,24 +96,29 @@ For pricing details, see the Gemini API documentation: https://ai.google.dev/gem
 
 | Model Name | IQ (Intelligence) | Speed | Feature |
 | :--- | :--- | :--- | :--- |
-| **3.1 Pro** | **Highest** | **Slow** | Best for deep professional analysis |
-| **3.1 Flash-Lite** | **High** | **Fast** | Latest balanced high-speed model |
-| **3 Flash** | **Medium** | **Fast** | General-purpose high-speed model |
-| **2.5 Pro** | **Highest** | **Slow** | Stable and high-precision analysis |
-| **2.5 Flash** | **Medium** | **Fast** | Reliable and stable legacy version |
-| **2.5 Flash-Lite** | **Standard** | **Fastest** | **Recommended:** Fastest & Cheapest |
+| **Gemini 2.5 Flash-Lite** | **Standard** | **Fastest** | **Recommended:** fastest and lowest cost |
+| **Gemini 2.5 Flash** | **Medium** | **Fast** | Stable fast model |
+| **Gemini 2.5 Pro** | **High** | **Slow** | Stable, high-accuracy analysis |
+| **Gemini 3.1 Flash-Lite** | **High** | **Fast** | Stable fast model |
+| **Gemini 3.5 Flash** | **High** | **Fast** | Stable. Note its default thinking behavior when unspecified |
+| **Gemini 3.1 Pro Preview** | **Highest** | **Slow** | Preview. Best for advanced analysis, but high cost |
 
 **About Thinking Level:**
-When you enable the "Thinking Level" for Gemini 3.x models, the AI generates a "thought process" before outputting the final answer. These thought processes are billed as Output Tokens, meaning higher levels will increase your costs (Gemini 2.5 series models do not support this feature, so their costs remain unchanged).
+Gemini 3 models use `thinkingLevel`, while Gemini 2.5 models use `thinkingBudget` to control reasoning effort. Thinking tokens are treated as output-side tokens, so higher thinking levels can increase cost. `None` / API default does not always mean "no thinking"; in particular, Gemini 3.5 Flash may default to medium when unspecified. If cost is the top priority, use `Minimal`. Gemini 2.5 Pro cannot receive `thinkingBudget: 0`, so `None` is treated as API default and `Minimal` uses the minimum budget.
 
 **Understanding Token Consumption:**
-Looking at Google AI Studio usage, 99 requests using 2.5 Flash-Lite cost about 7.09 JPY. This represents roughly 100,000 tokens (input + output). Since the stream had heavy chat traffic, the input tokens were high, while the output tokens remained low due to using the "Simplified" prompt.
-For example, a 30-second interval translates to a maximum of 120 requests per hour. 
-However, even with exactly 120 requests, token consumption varies drastically based on:
-* **Sparsely populated broadcasts:** Fewer chat messages mean fewer input tokens, keeping costs very low.
-* **Exciting Streams:** High-traffic streams send thousands of characters per request, consuming tokens rapidly.
-* **Summary Length:** Short bullet points are cheap, but detailed reports consume expensive "output tokens".
-It is recommended to test your usage with 2.5 Flash-Lite first to gauge your specific costs before switching to heavier models.
+Because prices can change, it is safer to compare models by relative multipliers using Gemini 2.5 Flash-Lite as 1.0x. Always check the latest Gemini API Pricing page: https://ai.google.dev/gemini-api/docs/pricing.
+
+| Model Name | Input multiplier | Output / thinking multiplier |
+| :--- | :---: | :---: |
+| **Gemini 2.5 Flash-Lite** | 1.0x | 1.0x |
+| **Gemini 2.5 Flash** | 3.0x | 6.25x |
+| **Gemini 2.5 Pro** | 12.5x | 25.0x |
+| **Gemini 3.1 Flash-Lite** | 2.5x | 3.75x |
+| **Gemini 3.5 Flash** | 15.0x | 22.5x |
+| **Gemini 3.1 Pro Preview** | 20.0x | 30.0x |
+
+Actual cost depends strongly on `summaryInterval`, `bufferThreshold`, `maxChars`, `summaryMode`, and `thinkingLevel`. Start with 2.5 Flash-Lite and short output, then move to heavier models or higher thinking levels only when needed.
 
 ## ⚠️ Troubleshooting
 

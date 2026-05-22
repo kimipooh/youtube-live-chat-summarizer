@@ -41,7 +41,7 @@ options.js / options.html  (設定画面)
 - **SPA 対応**: content.js が `setInterval` で `location.href` の変化を監視し、別配信へ遷移したらバッファと `isFirstRun` をリセットする。
 - **設定リアルタイム反映**: content.js は `chrome.storage.onChanged` を購読しており、options 保存後にページリロードは不要。
 - **モデル選択の優先順位**: `manualModel` (テキスト入力) が `geminiModel` (select) より優先。`background.js` と `sidepanel.js` の両方に同じ優先ロジックがあるため、片方だけ変更しないこと。
-- **Thinking Level**: モデル名に `gemini-3` を含む時のみ `generationConfig.thinkingConfig` を付与する。判定は `background.js` (API 送信時) と `sidepanel.js` (ヘッダ表示) の両方にあり、こちらも同期して変更する。
+- **Thinking Level**: thinking はモデルファミリ別に扱う。Gemini 3 系は `thinkingLevel`、Gemini 2.5 系は `thinkingBudget` を `generationConfig.thinkingConfig` に付与する。thinking family 判定は `background.js` (API 送信時) と `sidepanel.js` (ヘッダ表示) の両方にあり、こちらも同期して変更する。
 - **content script の注入対象**: `manifest.json` の matches は `live_chat*` / `live_chat_replay*` のみ。視聴ページ本体には注入しない設計。
 
 ## Storage schema (`chrome.storage.local`)
@@ -69,6 +69,7 @@ options.js / options.html  (設定画面)
 
 - **最小変更を維持**: ビルドツール導入、TypeScript 化、フレームワーク化、構造の刷新は行わない・提案しない。
 - **バイリンガル必須**: UI 文言、エラーメッセージ、マニュアル、README を追加・変更する時は `ja` と `en` の両方を更新する。`UI_TEXT` (options.js), `MANUAL_CONTENT` (manual.js), `STATUS_MAP` (background.js), `README.md` / `README-en.md` のいずれも対象。
-- **二重実装の同期**: `manualModel || geminiModel` の優先順位と `gemini-3` 判定は `background.js` と `sidepanel.js` の両方に存在する。片方だけ変更しない。
+- **二重実装の同期**: `manualModel || geminiModel` の優先順位と thinking family 判定は `background.js` と `sidepanel.js` の両方に存在する。片方だけ変更しない。
+- **モデル/Thinking 説明の同期**: モデル一覧や thinking 仕様を変更する時は、`options.js` / `options.html` / `manual.js` / `README.md` / `README-en.md` の選択肢・文言・説明を同期する。
 - **ウィンドウ分離の維持**: 新規メッセージを追加する時は `sidePanelPorts.get(windowId)` を踏襲し、ウィンドウ間で要約が混在しないようにする。
 - **ドキュメント同期**: 設定キー、デフォルト値、フロー、対応モデルを変更したら `README.md` / `README-en.md` と `CHANGELOG.md` を実装の一部として更新する。本文全体の書き換えは行わず、必要箇所のみ追記・修正する。

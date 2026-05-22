@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-05-22
+
+### Added
+- Added Gemini 3.5 Flash as a selectable model.
+- Added Minimal to the Thinking Level selector.
+- Added Thinking Budget support for Gemini 2.5 models.
+
+### Changed
+- Updated Gemini model list to use stable Gemini 3.1 Flash-Lite.
+- Updated thinking configuration logic by model family:
+  - Gemini 3.x uses thinkingLevel.
+  - Gemini 2.5 uses thinkingBudget.
+- Replaced fixed JPY/USD cost examples with relative input and output/thinking cost multipliers.
+- Updated Japanese and English manuals/README files for current Gemini model and thinking behavior.
+
+### Removed
+- Removed gemini-3-flash-preview from the normal model selector.
+
+### Migration
+- Migrates saved gemini-3-flash-preview to gemini-3.5-flash.
+- Migrates saved gemini-3.1-flash-lite-preview to gemini-3.1-flash-lite.
+- Migrates old Thinking Level values to the new 5-level scale.
+
 ## [1.0.1] - 2026-03-08
 
 ### Fixed

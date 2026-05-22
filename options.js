@@ -12,8 +12,8 @@ const UI_TEXT = {
     labelModel: "使用モデルの選択", 
     labelManualModel: "モデルコードの手動指定 (優先)", 
     manualModelHelp: "手動入力がある場合、上の選択より優先されます。利用可能なコードは <a href='https://ai.google.dev/gemini-api/docs/models' target='_blank'>Google公式サイト</a> を参照してください。",
-    labelThinkingLevel: "思考レベル (Thinking Level: 3.x系モデルのみ)",
-    thinkingLevels: { "0": "なし (標準)", "1": "低 (軽い推論)", "2": "中 (バランス)", "3": "高 (深い分析)" },
+    labelThinkingLevel: "思考レベル（対応モデルのみ）",
+    thinkingLevels: { "0": "なし（APIデフォルト）", "1": "最小（コスト最優先）", "2": "低（軽い推論）", "3": "中（バランス）", "4": "高（深い分析）" },
     labelSummaryMode: "要約モード", 
     labelSummaryLang: "要約の出力言語", 
     labelInterval: "要約の間隔（秒）（デフォルト: 30）", 
@@ -26,12 +26,12 @@ const UI_TEXT = {
     labelMaxChars: "1回あたりの最大解析文字数（コスト節約のため、超過分はカットして送信します）",
     modes: { simple: "簡易版 (トピック・熱量・変化を凝縮)", detailed: "詳細版 (熟練モデレーターによる深い分析)" },
     models: {
-      "gemini-3.1-pro-preview": "Gemini 3.1 Pro (最高知能 / 遅い / 専門分析)",
-      "gemini-3.1-flash-lite-preview": "Gemini 3.1 Flash-Lite (高い知能 / 高速 / 最新バランス)",
-      "gemini-3-flash-preview": "Gemini 3 Flash (中程度の知能 / 高速 / 汎用高速)",
-      "gemini-2.5-pro": "Gemini 2.5 Pro (高知能 / 遅い / 安定・高精度)",
+      "gemini-2.5-flash-lite": "Gemini 2.5 Flash-Lite（標準知能 / 最速 / 推奨・最安）",
       "gemini-2.5-flash": "Gemini 2.5 Flash (中程度の知能 / 高速 / 安定高速)",
-      "gemini-2.5-flash-lite": "Gemini 2.5 Flash-Lite (標準知能 / 最速 / 推奨・最安)"
+      "gemini-2.5-pro": "Gemini 2.5 Pro（高知能 / 遅い / 安定・高精度）",
+      "gemini-3.1-flash-lite": "Gemini 3.1 Flash-Lite（高い知能 / 高速 / Stable）",
+      "gemini-3.5-flash": "Gemini 3.5 Flash（高知能 / 高速 / Stable・思考既定あり）",
+      "gemini-3.1-pro-preview": "Gemini 3.1 Pro Preview（最高知能 / 遅い / Preview・高コスト）"
     },
     promptTitle: "カスタムプロンプト ({{LANG}} = 要約の出力言語に自動置換)",
     labelPromptSimple: "簡易版プロンプト",
@@ -44,8 +44,8 @@ const UI_TEXT = {
     labelModel: "Select AI Model", 
     labelManualModel: "Manual Model Code (Priority)", 
     manualModelHelp: "If entered, this overrides the selection above. Find codes at <a href='https://ai.google.dev/gemini-api/docs/models' target='_blank'>Google Official Docs</a>.",
-    labelThinkingLevel: "Thinking Level (Gemini 3.x models only)",
-    thinkingLevels: { "0": "None (Standard)", "1": "Low (Light Reasoning)", "2": "Medium (Balanced)", "3": "High (Deep Analysis)" },
+    labelThinkingLevel: "Thinking Level (supported models only)",
+    thinkingLevels: { "0": "None (API default)", "1": "Minimal (lowest cost)", "2": "Low (light reasoning)", "3": "Medium (balanced)", "4": "High (deep reasoning)" },
     labelSummaryMode: "Summary Mode", 
     labelSummaryLang: "Output Language", 
     labelInterval: "Interval (sec) (Default: 30)", 
@@ -58,12 +58,12 @@ const UI_TEXT = {
     labelMaxChars: "Max Input Characters per Request (Cuts excess to save API costs)",
     modes: { simple: "Simple (Topics/Heat/Change condensed)", detailed: "Detailed (Deep analysis by expert moderator)" },
     models: {
-      "gemini-3.1-pro-preview": "Gemini 3.1 Pro (Highest IQ / Slow / Specialist)",
-      "gemini-3.1-flash-lite-preview": "Gemini 3.1 Flash-Lite (High IQ / Fast / Latest Balance)",
-      "gemini-3-flash-preview": "Gemini 3 Flash (Medium IQ / Fast / General High-speed)",
-      "gemini-2.5-pro": "Gemini 2.5 Pro (High IQ / Slow / Stable & Precise)",
+      "gemini-2.5-flash-lite": "Gemini 2.5 Flash-Lite (Standard IQ / Fastest / Recommended, lowest cost)",
       "gemini-2.5-flash": "Gemini 2.5 Flash (Medium IQ / Fast / Stable & Fast)",
-      "gemini-2.5-flash-lite": "Gemini 2.5 Flash-Lite (Standard IQ / Fastest / Recommended)"
+      "gemini-2.5-pro": "Gemini 2.5 Pro (High IQ / Slow / Stable, high accuracy)",
+      "gemini-3.1-flash-lite": "Gemini 3.1 Flash-Lite (High IQ / Fast / Stable)",
+      "gemini-3.5-flash": "Gemini 3.5 Flash (High IQ / Fast / Stable, default thinking)",
+      "gemini-3.1-pro-preview": "Gemini 3.1 Pro Preview (Highest IQ / Slow / Preview, high cost)"
     },
     promptTitle: "Custom Prompts ({{LANG}} will be replaced by Language)",
     labelPromptSimple: "Simple Mode Prompt",
@@ -98,6 +98,41 @@ const LANGUAGE_LIST = [
   ] }
 ];
 
+const THINKING_LEVEL_SCHEMA_VERSION = 2;
+let currentThinkingLevel = 0;
+
+function migrateModelSettings(settings, callback) {
+  const modelMap = {
+    "gemini-3-flash-preview": "gemini-3.5-flash",
+    "gemini-3.1-flash-lite-preview": "gemini-3.1-flash-lite"
+  };
+  const migratedModel = modelMap[settings.geminiModel];
+
+  if (!migratedModel) {
+    callback(settings);
+    return;
+  }
+
+  chrome.storage.local.set({ geminiModel: migratedModel }, () => callback({ ...settings, geminiModel: migratedModel }));
+}
+
+function migrateThinkingLevelSettings(settings, callback) {
+  if (settings.thinkingLevelSchemaVersion >= THINKING_LEVEL_SCHEMA_VERSION) {
+    callback(settings);
+    return;
+  }
+
+  const oldToNewLevel = { 0: 0, 1: 2, 2: 3, 3: 4 };
+  const oldLevel = Number(settings.thinkingLevel);
+  const updates = { thinkingLevelSchemaVersion: THINKING_LEVEL_SCHEMA_VERSION };
+
+  if (Object.prototype.hasOwnProperty.call(oldToNewLevel, oldLevel)) {
+    updates.thinkingLevel = oldToNewLevel[oldLevel];
+  }
+
+  chrome.storage.local.set(updates, () => callback({ ...settings, ...updates }));
+}
+
 function applyUi(lang) {
   const t = UI_TEXT[lang] || UI_TEXT.en;
   document.getElementById('ui-title').innerText = t.title;
@@ -124,7 +159,7 @@ function applyUi(lang) {
         opt.innerText = txt; 
         tLevel.appendChild(opt);
       }
-      tLevel.value = currentLevel || "0";
+      tLevel.value = Object.prototype.hasOwnProperty.call(t.thinkingLevels, currentLevel) ? currentLevel : "0";
     }
   }
 
@@ -185,13 +220,15 @@ document.getElementById('save').addEventListener('click', () => {
   const ui = document.getElementById('uiLanguage').value;
   const key = document.getElementById('apiKey').value.trim();
   if (!key) { showStatus(UI_TEXT[ui].statusNg, "red"); return; }
+  const thinkingLevelValue = document.getElementById('thinkingLevel') ? parseInt(document.getElementById('thinkingLevel').value, 10) : 0;
   
   chrome.storage.local.set({
     uiLanguage: ui, 
     geminiApiKey: key, 
     geminiModel: document.getElementById('modelName').value,
     manualModel: document.getElementById('manualModel') ? document.getElementById('manualModel').value.trim() : "",
-    thinkingLevel: document.getElementById('thinkingLevel') ? parseInt(document.getElementById('thinkingLevel').value, 10) : 0,
+    thinkingLevel: Number.isFinite(thinkingLevelValue) ? thinkingLevelValue : currentThinkingLevel,
+    thinkingLevelSchemaVersion: THINKING_LEVEL_SCHEMA_VERSION,
     summaryMode: document.getElementById('summaryMode').value, 
     summaryInterval: parseInt(document.getElementById('interval').value, 10),
     bufferThreshold: parseInt(document.getElementById('bufferThreshold').value, 10),
@@ -209,7 +246,8 @@ document.getElementById('resetPrompts').addEventListener('click', () => {
 
 function showStatus(txt, col) { const s = document.getElementById('status'); s.innerText = txt; s.style.color = col; setTimeout(() => s.innerText = "", 3000); }
 
-chrome.storage.local.get(null, (d) => { 
+chrome.storage.local.get(null, (storedSettings) => migrateModelSettings(storedSettings, (modelSettings) => migrateThinkingLevelSettings(modelSettings, (d) => { 
+  currentThinkingLevel = Number.isFinite(Number(d.thinkingLevel)) ? Number(d.thinkingLevel) : 0;
   // デフォルト UI を ja (日本語) に設定
   applyUi(d.uiLanguage || 'ja'); 
   if (d.uiLanguage) document.getElementById('uiLanguage').value = d.uiLanguage;
@@ -234,4 +272,4 @@ chrome.storage.local.get(null, (d) => {
   
   document.getElementById('promptSimple').value = d.promptSimple || DEFAULT_PROMPTS.simple;
   document.getElementById('promptDetailed').value = d.promptDetailed || DEFAULT_PROMPTS.detailed;
-});
+})));
