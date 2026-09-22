@@ -32,29 +32,31 @@ const MANUAL_CONTENT = {
     <table class="sim-table">
         <tr><th>モデル名</th><th>知能 (IQ)</th><th>速度</th><th>特徴</th></tr>
         <tr><td><strong>Gemini 2.5 Flash-Lite</strong></td><td>標準</td><td>最速</td><td><strong>推奨：</strong>最速・最安</td></tr>
-        <tr><td><strong>Gemini 2.5 Flash</strong></td><td>中</td><td>速い</td><td>安定した高速モデル</td></tr>
-        <tr><td><strong>Gemini 2.5 Pro</strong></td><td>高い</td><td>遅い</td><td>安定した高精度な分析</td></tr>
-        <tr><td><strong>Gemini 3.1 Flash-Lite</strong></td><td>高い</td><td>速い</td><td>Stable の高速モデル</td></tr>
-        <tr><td><strong>Gemini 3.5 Flash</strong></td><td>高い</td><td>速い</td><td>Stable。未指定時の thinking default に注意</td></tr>
-        <tr><td><strong>Gemini 3.1 Pro Preview</strong></td><td>最高</td><td>遅い</td><td>Preview。高度な分析向けだが高コスト</td></tr>
+        <tr><td><strong>Gemini 3.1 Flash-Lite</strong></td><td>高い</td><td>速い</td><td>Stable の高速モデル。2027年5月7日に提供終了予定</td></tr>
+        <tr><td><strong>Gemini 2.5 Flash</strong></td><td>中程度</td><td>速い</td><td>安定した高速モデル</td></tr>
+        <tr><td><strong>Gemini 3.5 Flash-Lite</strong></td><td>高い</td><td>速い</td><td>Stable。低コストで高い知能</td></tr>
+        <tr><td><strong>Gemini 3.8 Flash</strong></td><td>高性能</td><td>速い</td><td>最も高性能な Flash モデル</td></tr>
+        <tr><td><strong>Gemini 3.1 Pro Preview</strong></td><td>最高</td><td>遅い</td><td>Preview。最高性能だが高コスト・無料枠なし</td></tr>
     </table>
     <h3>🤖 コストの相対比較</h3>
     <p>確定した料金（課金額）の反映は、数時間から１日程度のタイムラグがあるので注意してください。</p>
-    <p>料金は変動するため、固定金額ではなく Gemini 2.5 Flash-Lite を 1.0x とした相対倍率で考えるのが安全です。最新の単価は必ず <a target="_blank" href="https://ai.google.dev/gemini-api/docs/pricing">Gemini API Pricing</a> を確認してください。</p>
+    <p>料金は変更される可能性があります。倍率は2026年9月22日時点の Standard API のテキスト入力・テキスト出力料金を基準とし、思考トークンは出力側として扱います。固定的・永続的な値ではないため、最新の料金は必ず <a target="_blank" href="https://ai.google.dev/gemini-api/docs/pricing">Google 公式 Pricing ページ</a> を確認してください。</p>
     <table class="sim-table">
         <tr><th>モデル名</th><th>input倍率</th><th>output / thinking倍率</th></tr>
         <tr><td><strong>Gemini 2.5 Flash-Lite</strong></td><td>1.0x</td><td>1.0x</td></tr>
-        <tr><td><strong>Gemini 2.5 Flash</strong></td><td>3.0x</td><td>6.25x</td></tr>
-        <tr><td><strong>Gemini 2.5 Pro</strong></td><td>12.5x</td><td>25.0x</td></tr>
         <tr><td><strong>Gemini 3.1 Flash-Lite</strong></td><td>2.5x</td><td>3.75x</td></tr>
-        <tr><td><strong>Gemini 3.5 Flash</strong></td><td>15.0x</td><td>22.5x</td></tr>
-        <tr><td><strong>Gemini 3.1 Pro Preview</strong></td><td>20.0x</td><td>30.0x</td></tr>
+        <tr><td><strong>Gemini 2.5 Flash</strong></td><td>3.0x</td><td>6.25x</td></tr>
+        <tr><td><strong>Gemini 3.5 Flash-Lite</strong></td><td>3.0x</td><td>6.25x</td></tr>
+        <tr><td><strong>Gemini 3.8 Flash（2026年12月31日まで）</strong></td><td>7.5x</td><td>9.375x</td></tr>
+        <tr><td><strong>Gemini 3.8 Flash（2027年1月1日以降）</strong></td><td>15.0x</td><td>18.75x</td></tr>
+        <tr><td><strong>Gemini 3.1 Pro Preview（入力20万トークン以下）</strong></td><td>20.0x</td><td>30.0x</td></tr>
+        <tr><td><strong>Gemini 3.1 Pro Preview（入力20万トークン超）</strong></td><td>40.0x</td><td>45.0x</td></tr>
     </table>
+    <p>実際のコストは、<code>summaryInterval</code>（要約間隔）、<code>bufferThreshold</code>（送信に必要な最小チャット数）、<code>maxChars</code>（1回あたりの最大入力文字数）、<code>summaryMode</code>（簡易/詳細）、<code>thinkingLevel</code>（思考量）の影響を強く受けます。</p>
 
     <h3>🧠 思考レベル (Thinking Level) とコスト</h3>
     <p>Gemini 3 系では <code>thinkingLevel</code>、Gemini 2.5 系では <code>thinkingBudget</code> を使って思考量を制御します。思考トークンは出力側のトークンとして扱われるため、思考レベルを上げるほどコストが増えやすくなります。</p>
-    <p><code>None</code> / API default は必ずしも「思考なし」ではありません。特に Gemini 3.5 Flash は未指定時に default medium になる点に注意してください。コストを最重視する場合は <code>Minimal</code> を推奨します。Gemini 2.5 Pro は <code>thinkingBudget: 0</code> を送れないため、<code>None</code> は API default、<code>Minimal</code> は最小 budget として扱います。</p>
-    <p>実際のコストは、<code>summaryInterval</code>（要約間隔）、<code>bufferThreshold</code>（送信に必要な最小チャット数）、<code>maxChars</code>（1回あたりの最大入力文字数）、<code>summaryMode</code>（簡易/詳細）、<code>thinkingLevel</code>（思考量）の影響を強く受けます。</p>
+    <p><code>None</code> / API default は必ずしも「思考なし」ではありません。Gemini 3.8 Flash は未指定時の既定思考が medium で、Gemini 3.5 Flash-Lite は <code>minimal</code> に対応し既定も minimal です。Gemini 3.8 Flash と Gemini 3.1 Pro Preview は <code>minimal</code> 非対応のため、UI で <code>Minimal</code> を選んでも <code>low</code> として送信されます。</p>
   `,
   en: `
       <div class="guide-box">
@@ -89,28 +91,30 @@ const MANUAL_CONTENT = {
       <table class="sim-table">
         <tr><th>Model Name</th><th>IQ (Intelligence)</th><th>Speed</th><th>Feature</th></tr>
         <tr><td><strong>Gemini 2.5 Flash-Lite</strong></td><td>Standard</td><td>Fastest</td><td><strong>Recommended:</strong> fastest and lowest cost</td></tr>
+        <tr><td><strong>Gemini 3.1 Flash-Lite</strong></td><td>High</td><td>Fast</td><td>Stable fast model. Scheduled for shutdown on May 7, 2027</td></tr>
         <tr><td><strong>Gemini 2.5 Flash</strong></td><td>Medium</td><td>Fast</td><td>Stable fast model</td></tr>
-        <tr><td><strong>Gemini 2.5 Pro</strong></td><td>High</td><td>Slow</td><td>Stable, high-accuracy analysis</td></tr>
-        <tr><td><strong>Gemini 3.1 Flash-Lite</strong></td><td>High</td><td>Fast</td><td>Stable fast model</td></tr>
-        <tr><td><strong>Gemini 3.5 Flash</strong></td><td>High</td><td>Fast</td><td>Stable. Note its default thinking behavior when unspecified</td></tr>
-        <tr><td><strong>Gemini 3.1 Pro Preview</strong></td><td>Highest</td><td>Slow</td><td>Preview. Best for advanced analysis, but high cost</td></tr>
+        <tr><td><strong>Gemini 3.5 Flash-Lite</strong></td><td>High</td><td>Fast</td><td>Stable. High IQ at low cost</td></tr>
+        <tr><td><strong>Gemini 3.8 Flash</strong></td><td>High performance</td><td>Fast</td><td>The most capable Flash model</td></tr>
+        <tr><td><strong>Gemini 3.1 Pro Preview</strong></td><td>Highest</td><td>Slow</td><td>Preview. Highest performance, but high cost and no free tier</td></tr>
       </table>
       <h3>🤖 Relative Cost Comparison</h3>
       <p>Please note that there may be a time lag of several hours to one day before the finalized charges are reflected in your account.</p>
-      <p>Because prices can change, it is safer to compare models by relative multipliers using Gemini 2.5 Flash-Lite as 1.0x. Always check the latest <a target="_blank" href="https://ai.google.dev/gemini-api/docs/pricing">Gemini API Pricing</a> page.</p>
+      <p>Prices may change. These multipliers are based on Standard API text input and text output pricing as of September 22, 2026; thinking tokens are treated as output-side tokens. They are not fixed or permanent values, so always check the latest <a target="_blank" href="https://ai.google.dev/gemini-api/docs/pricing">Google official Pricing page</a>.</p>
       <table class="sim-table">
         <tr><th>Model Name</th><th>Input multiplier</th><th>Output / thinking multiplier</th></tr>
         <tr><td><strong>Gemini 2.5 Flash-Lite</strong></td><td>1.0x</td><td>1.0x</td></tr>
-        <tr><td><strong>Gemini 2.5 Flash</strong></td><td>3.0x</td><td>6.25x</td></tr>
-        <tr><td><strong>Gemini 2.5 Pro</strong></td><td>12.5x</td><td>25.0x</td></tr>
         <tr><td><strong>Gemini 3.1 Flash-Lite</strong></td><td>2.5x</td><td>3.75x</td></tr>
-        <tr><td><strong>Gemini 3.5 Flash</strong></td><td>15.0x</td><td>22.5x</td></tr>
-        <tr><td><strong>Gemini 3.1 Pro Preview</strong></td><td>20.0x</td><td>30.0x</td></tr>
+        <tr><td><strong>Gemini 2.5 Flash</strong></td><td>3.0x</td><td>6.25x</td></tr>
+        <tr><td><strong>Gemini 3.5 Flash-Lite</strong></td><td>3.0x</td><td>6.25x</td></tr>
+        <tr><td><strong>Gemini 3.8 Flash (through December 31, 2026)</strong></td><td>7.5x</td><td>9.375x</td></tr>
+        <tr><td><strong>Gemini 3.8 Flash (from January 1, 2027)</strong></td><td>15.0x</td><td>18.75x</td></tr>
+        <tr><td><strong>Gemini 3.1 Pro Preview (prompts &lt;= 200k tokens)</strong></td><td>20.0x</td><td>30.0x</td></tr>
+        <tr><td><strong>Gemini 3.1 Pro Preview (prompts &gt; 200k tokens)</strong></td><td>40.0x</td><td>45.0x</td></tr>
      </table>
+      <p>Actual cost depends strongly on <code>summaryInterval</code>, <code>bufferThreshold</code>, <code>maxChars</code>, <code>summaryMode</code>, and <code>thinkingLevel</code>.</p>
 
       <h3>🧠 Thinking Level and Cost</h3>
       <p>Gemini 3 models use <code>thinkingLevel</code>, while Gemini 2.5 models use <code>thinkingBudget</code> to control reasoning effort. Thinking tokens are treated as output-side tokens, so higher thinking levels can increase cost.</p>
-      <p><code>None</code> / API default does not always mean "no thinking"; in particular, Gemini 3.5 Flash may default to medium when unspecified. If cost is the top priority, use <code>Minimal</code>. Gemini 2.5 Pro cannot receive <code>thinkingBudget: 0</code>, so <code>None</code> is treated as API default and <code>Minimal</code> uses the minimum budget.</p>
-      <p>Actual cost depends strongly on <code>summaryInterval</code>, <code>bufferThreshold</code>, <code>maxChars</code>, <code>summaryMode</code>, and <code>thinkingLevel</code>.</p>
+      <p><code>None</code> / API default does not always mean "no thinking." Gemini 3.8 Flash defaults to medium reasoning when unspecified, while Gemini 3.5 Flash-Lite supports <code>minimal</code> and defaults to it. Because Gemini 3.8 Flash and Gemini 3.1 Pro Preview do not support <code>minimal</code>, selecting <code>Minimal</code> in the UI sends <code>low</code>.</p>
   `
 };

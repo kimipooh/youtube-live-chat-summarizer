@@ -3,7 +3,7 @@
 **English** | [日本語](README.md)
 
 - Author: Kimiya Kitani
-- Latest version: 1.1.1
+- Latest version: 1.2.0
 
 ## Overview
 
@@ -45,7 +45,7 @@ This step is not required if you have already installed the application via the 
 6. Once **YouTube Live Chat Summarizer** appears in your extensions, open the **Options** menu. Follow the instructions provided to create and set your API Key.
 7. Complete the required initial settings:
    - **UI Language:** Japanese is set by default, but English is also fully supported.
-   - **AI Model:** Gemini 2.5 Flash-Lite is set by default. Gemini 3.1 Pro Preview is available, but higher-performance models cost more. You can also manually specify model codes to use newer or preview models.
+   - **AI Model:** Choose from six models, with Gemini 2.5 Flash-Lite set by default. Higher-performance models cost more. You can also manually specify model codes to use newer or preview models.
    - **Thinking Level:** Supported models can use "Thinking Level" to tune the balance between cost and response quality.
    - **Output Mode:** Choose between "Simplified" and "Detailed" versions. Each can be customized in the options. The `{{LANG}}` placeholder will automatically insert your selected output language.
    - **Output Language:** Based on [languages supported by Gemini](https://support.google.com/gemini/answer/13575153) (as of late February 2026). The default is set to Japanese; please change it to English or your preferred language as needed.
@@ -97,28 +97,32 @@ For pricing details, see the Gemini API documentation: https://ai.google.dev/gem
 | Model Name | IQ (Intelligence) | Speed | Feature |
 | :--- | :--- | :--- | :--- |
 | **Gemini 2.5 Flash-Lite** | **Standard** | **Fastest** | **Recommended:** fastest and lowest cost |
+| **Gemini 3.1 Flash-Lite** | **High** | **Fast** | Stable fast model. Scheduled for shutdown on May 7, 2027 |
 | **Gemini 2.5 Flash** | **Medium** | **Fast** | Stable fast model |
-| **Gemini 2.5 Pro** | **High** | **Slow** | Stable, high-accuracy analysis |
-| **Gemini 3.1 Flash-Lite** | **High** | **Fast** | Stable fast model |
-| **Gemini 3.5 Flash** | **High** | **Fast** | Stable. Note its default thinking behavior when unspecified |
-| **Gemini 3.1 Pro Preview** | **Highest** | **Slow** | Preview. Best for advanced analysis, but high cost |
+| **Gemini 3.5 Flash-Lite** | **High** | **Fast** | Stable. High IQ at low cost |
+| **Gemini 3.8 Flash** | **High performance** | **Fast** | The most capable Flash model |
+| **Gemini 3.1 Pro Preview** | **Highest** | **Slow** | Preview. Highest performance, but high cost and no free tier |
 
 **About Thinking Level:**
-Gemini 3 models use `thinkingLevel`, while Gemini 2.5 models use `thinkingBudget` to control reasoning effort. Thinking tokens are treated as output-side tokens, so higher thinking levels can increase cost. `None` / API default does not always mean "no thinking"; in particular, Gemini 3.5 Flash may default to medium when unspecified. If cost is the top priority, use `Minimal`. Gemini 2.5 Pro cannot receive `thinkingBudget: 0`, so `None` is treated as API default and `Minimal` uses the minimum budget.
+Gemini 3 models use `thinkingLevel`, while Gemini 2.5 models use `thinkingBudget` to control reasoning effort. Thinking tokens are treated as output-side tokens, so higher thinking levels can increase cost. `None` / API default does not always mean "no thinking." Gemini 3.8 Flash defaults to medium reasoning when unspecified, while Gemini 3.5 Flash-Lite supports `minimal` and defaults to it. Because Gemini 3.8 Flash and Gemini 3.1 Pro Preview do not support `minimal`, selecting `Minimal` in the UI sends `low`.
 
 **Understanding Token Consumption:**
-Because prices can change, it is safer to compare models by relative multipliers using Gemini 2.5 Flash-Lite as 1.0x. Always check the latest Gemini API Pricing page: https://ai.google.dev/gemini-api/docs/pricing.
+Prices may change. These multipliers are based on Standard API text input and text output pricing as of September 22, 2026; thinking tokens are treated as output-side tokens. They are not fixed or permanent values, so always check the latest Google official Pricing page: https://ai.google.dev/gemini-api/docs/pricing.
 
 | Model Name | Input multiplier | Output / thinking multiplier |
 | :--- | :---: | :---: |
 | **Gemini 2.5 Flash-Lite** | 1.0x | 1.0x |
-| **Gemini 2.5 Flash** | 3.0x | 6.25x |
-| **Gemini 2.5 Pro** | 12.5x | 25.0x |
 | **Gemini 3.1 Flash-Lite** | 2.5x | 3.75x |
-| **Gemini 3.5 Flash** | 15.0x | 22.5x |
-| **Gemini 3.1 Pro Preview** | 20.0x | 30.0x |
+| **Gemini 2.5 Flash** | 3.0x | 6.25x |
+| **Gemini 3.5 Flash-Lite** | 3.0x | 6.25x |
+| **Gemini 3.8 Flash (through December 31, 2026)** | 7.5x | 9.375x |
+| **Gemini 3.8 Flash (from January 1, 2027)** | 15.0x | 18.75x |
+| **Gemini 3.1 Pro Preview (prompts <= 200k tokens)** | 20.0x | 30.0x |
+| **Gemini 3.1 Pro Preview (prompts > 200k tokens)** | 40.0x | 45.0x |
 
-Actual cost depends strongly on `summaryInterval`, `bufferThreshold`, `maxChars`, `summaryMode`, and `thinkingLevel`. Start with 2.5 Flash-Lite and short output, then move to heavier models or higher thinking levels only when needed.
+Actual cost depends strongly on `summaryInterval`, `bufferThreshold`, `maxChars`, `summaryMode`, and `thinkingLevel`.
+
+Start with 2.5 Flash-Lite and short output, then move to heavier models or higher thinking levels only when needed.
 
 ## ⚠️ Troubleshooting
 

@@ -3,7 +3,7 @@
 [English](README-en.md) | **日本語**
 
 - Author: Kimiya Kitani
-- Latest version: 1.1.1
+- Latest version: 1.2.0
 
 ## 概要
 
@@ -46,7 +46,7 @@ Chrome拡張機能からインストールした場合には、不要です。
 6. Chromeの拡張機能に、YouTube Live Chat Summarizer が追加されるので、「オプション」を開きます。下記を参考に、API Key を作成した上でセットします。
 7. 必要な初期設定をします。
   - **UI Language:** デフォルトで日本語に設定されていますが、English も選択できます。
-  - **AI Model:** Gemini 2.5 Flash-Lite がデフォルトです。Gemini 3.1 Pro Preview まで選択可能ですが、高性能モデルほどコストが上がります。プレビュー版などの新しいモデルを使いたい場合は「モデルコードの手動指定」も可能です。
+  - **AI Model:** 6つのモデルから選択でき、Gemini 2.5 Flash-Lite がデフォルトです。上位モデルほどコストが上がります。プレビュー版などの新しいモデルを使いたい場合は「モデルコードの手動指定」も可能です。
   - **Thinking Level:** 対応モデルでは「思考レベル」を設定して、コストや応答品質のバランスを調整できます。
   - **Output Mode:** 簡易版と詳細版を用意しています。それぞれオプションからカスタマイズできます。`{{LANG}}` には、出力言語が自動的に入力されます。
   - **Output Language:** [Gemini のサポートする言語](https://support.google.com/gemini/answer/13575153)（2026年2月末時点）を設定しています。デフォルトは日本語に設定しているので、必要に応じて適宜変更してください。
@@ -99,28 +99,32 @@ Google Cloud Consoleを利用する場合には、Gemini APIのみの制限を�
 | モデル名 | 知能 (IQ) | 速度 | 特徴 |
 | :--- | :--- | :--- | :--- |
 | **Gemini 2.5 Flash-Lite** | **標準** | **最速** | **推奨：**最速・最安 |
-| **Gemini 2.5 Flash** | **中** | **速い** | 安定した高速モデル |
-| **Gemini 2.5 Pro** | **高い** | **遅い** | 安定した高精度な分析 |
-| **Gemini 3.1 Flash-Lite** | **高い** | **速い** | Stable の高速モデル |
-| **Gemini 3.5 Flash** | **高い** | **速い** | Stable。未指定時の thinking default に注意 |
-| **Gemini 3.1 Pro Preview** | **最高** | **遅い** | Preview。高度な分析向けだが高コスト |
+| **Gemini 3.1 Flash-Lite** | **高い** | **速い** | Stable の高速モデル。2027年5月7日に提供終了予定 |
+| **Gemini 2.5 Flash** | **中程度** | **速い** | 安定した高速モデル |
+| **Gemini 3.5 Flash-Lite** | **高い** | **速い** | Stable。低コストで高い知能 |
+| **Gemini 3.8 Flash** | **高性能** | **速い** | 最も高性能な Flash モデル |
+| **Gemini 3.1 Pro Preview** | **最高** | **遅い** | Preview。最高性能だが高コスト・無料枠なし |
 
 **思考レベル（Thinking Level）について：**
-Gemini 3 系では `thinkingLevel`、Gemini 2.5 系では `thinkingBudget` を使って思考量を制御します。思考トークンは出力側のトークンとして扱われるため、思考レベルを上げるほどコストが増えやすくなります。`None` / API default は必ずしも「思考なし」ではなく、特に Gemini 3.5 Flash は未指定時に default medium になる点に注意してください。コストを最重視する場合は `Minimal` を推奨します。Gemini 2.5 Pro は `thinkingBudget: 0` を送れないため、`None` は API default、`Minimal` は最小 budget として扱います。
+Gemini 3 系では `thinkingLevel`、Gemini 2.5 系では `thinkingBudget` を使って思考量を制御します。思考トークンは出力側のトークンとして扱われるため、思考レベルを上げるほどコストが増えやすくなります。`None` / API default は必ずしも「思考なし」ではありません。Gemini 3.8 Flash は未指定時の既定思考が medium で、Gemini 3.5 Flash-Lite は `minimal` に対応し既定も minimal です。Gemini 3.8 Flash と Gemini 3.1 Pro Preview は `minimal` 非対応のため、UI で `Minimal` を選んでも `low` として送信されます。
 
 **トークン消費量（コスト）の考え方について：**
-料金は変動するため、固定金額ではなく Gemini 2.5 Flash-Lite を 1.0x とした相対倍率で考えるのが安全です。最新の単価は必ず Gemini API Pricing（ https://ai.google.dev/gemini-api/docs/pricing ）を確認してください。
+料金は変更される可能性があります。倍率は2026年9月22日時点の Standard API のテキスト入力・テキスト出力料金を基準とし、思考トークンは出力側として扱います。固定的・永続的な値ではないため、最新の料金は必ず Google 公式 Pricing ページ（ https://ai.google.dev/gemini-api/docs/pricing ）を確認してください。
 
 | モデル名 | input倍率 | output / thinking倍率 |
 | :--- | :---: | :---: |
 | **Gemini 2.5 Flash-Lite** | 1.0x | 1.0x |
-| **Gemini 2.5 Flash** | 3.0x | 6.25x |
-| **Gemini 2.5 Pro** | 12.5x | 25.0x |
 | **Gemini 3.1 Flash-Lite** | 2.5x | 3.75x |
-| **Gemini 3.5 Flash** | 15.0x | 22.5x |
-| **Gemini 3.1 Pro Preview** | 20.0x | 30.0x |
+| **Gemini 2.5 Flash** | 3.0x | 6.25x |
+| **Gemini 3.5 Flash-Lite** | 3.0x | 6.25x |
+| **Gemini 3.8 Flash（2026年12月31日まで）** | 7.5x | 9.375x |
+| **Gemini 3.8 Flash（2027年1月1日以降）** | 15.0x | 18.75x |
+| **Gemini 3.1 Pro Preview（入力20万トークン以下）** | 20.0x | 30.0x |
+| **Gemini 3.1 Pro Preview（入力20万トークン超）** | 40.0x | 45.0x |
 
-実際のコストは、`summaryInterval`（要約間隔）、`bufferThreshold`（送信に必要な最小チャット数）、`maxChars`（1回あたりの最大入力文字数）、`summaryMode`（簡易/詳細）、`thinkingLevel`（思考量）の影響を強く受けます。まずは 2.5 Flash-Lite と短い出力で運用し、必要に応じて上位モデルや高い思考レベルへ切り替えることをおすすめします。
+実際のコストは、`summaryInterval`（要約間隔）、`bufferThreshold`（送信に必要な最小チャット数）、`maxChars`（1回あたりの最大入力文字数）、`summaryMode`（簡易/詳細）、`thinkingLevel`（思考量）の影響を強く受けます。
+
+まずは 2.5 Flash-Lite と短い出力で運用し、必要に応じて上位モデルや高い思考レベルへ切り替えることをおすすめします。
 
 ## ⚠️ トラブルシューティング
 

@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-09-22
+
+### Added
+- Added gemini-3.5-flash-lite and gemini-3.8-flash as selectable models.
+
+### Changed
+- Kept gemini-2.5-flash-lite as the default and lowest-cost baseline model, and gemini-3.1-pro-preview as the highest-performance selectable model.
+- Updated migration for saved gemini-3-flash-preview, gemini-3.1-flash-lite-preview, gemini-3.5-flash, and gemini-2.5-pro settings.
+- Sends Thinking Level Minimal as low for models without minimal support (gemini-3.8-flash and gemini-3.1-pro-preview).
+- Updated Japanese and English README files and built-in manuals with the model comparison and relative cost multipliers.
+
+### Removed
+- Removed gemini-2.5-pro and gemini-3.5-flash from the normal model selector; manual model entry remains available.
+
 ## [1.1.1] - 2026-05-22
 
 ### Fixed

@@ -27,10 +27,10 @@ const UI_TEXT = {
     modes: { simple: "簡易版 (トピック・熱量・変化を凝縮)", detailed: "詳細版 (熟練モデレーターによる深い分析)" },
     models: {
       "gemini-2.5-flash-lite": "Gemini 2.5 Flash-Lite（標準知能 / 最速 / 推奨・最安）",
-      "gemini-2.5-flash": "Gemini 2.5 Flash (中程度の知能 / 高速 / 安定高速)",
-      "gemini-2.5-pro": "Gemini 2.5 Pro（高知能 / 遅い / 安定・高精度）",
       "gemini-3.1-flash-lite": "Gemini 3.1 Flash-Lite（高い知能 / 高速 / Stable）",
-      "gemini-3.5-flash": "Gemini 3.5 Flash（高知能 / 高速 / Stable・思考既定あり）",
+      "gemini-2.5-flash": "Gemini 2.5 Flash（中程度の知能 / 高速 / 安定）",
+      "gemini-3.5-flash-lite": "Gemini 3.5 Flash-Lite（高い知能 / 高速 / Stable・低コスト）",
+      "gemini-3.8-flash": "Gemini 3.8 Flash（高性能 / 高速 / Stable）",
       "gemini-3.1-pro-preview": "Gemini 3.1 Pro Preview（最高知能 / 遅い / Preview・高コスト）"
     },
     promptTitle: "カスタムプロンプト ({{LANG}} = 要約の出力言語に自動置換)",
@@ -59,10 +59,10 @@ const UI_TEXT = {
     modes: { simple: "Simple (Topics/Heat/Change condensed)", detailed: "Detailed (Deep analysis by expert moderator)" },
     models: {
       "gemini-2.5-flash-lite": "Gemini 2.5 Flash-Lite (Standard IQ / Fastest / Recommended, lowest cost)",
-      "gemini-2.5-flash": "Gemini 2.5 Flash (Medium IQ / Fast / Stable & Fast)",
-      "gemini-2.5-pro": "Gemini 2.5 Pro (High IQ / Slow / Stable, high accuracy)",
       "gemini-3.1-flash-lite": "Gemini 3.1 Flash-Lite (High IQ / Fast / Stable)",
-      "gemini-3.5-flash": "Gemini 3.5 Flash (High IQ / Fast / Stable, default thinking)",
+      "gemini-2.5-flash": "Gemini 2.5 Flash (Medium IQ / Fast / Stable)",
+      "gemini-3.5-flash-lite": "Gemini 3.5 Flash-Lite (High IQ / Fast / Stable, low cost)",
+      "gemini-3.8-flash": "Gemini 3.8 Flash (High performance / Fast / Stable)",
       "gemini-3.1-pro-preview": "Gemini 3.1 Pro Preview (Highest IQ / Slow / Preview, high cost)"
     },
     promptTitle: "Custom Prompts ({{LANG}} will be replaced by Language)",
@@ -103,8 +103,10 @@ let currentThinkingLevel = 0;
 
 function migrateModelSettings(settings, callback) {
   const modelMap = {
-    "gemini-3-flash-preview": "gemini-3.5-flash",
-    "gemini-3.1-flash-lite-preview": "gemini-3.1-flash-lite"
+    "gemini-3-flash-preview": "gemini-3.8-flash",
+    "gemini-3.1-flash-lite-preview": "gemini-3.1-flash-lite",
+    "gemini-3.5-flash": "gemini-3.8-flash",
+    "gemini-2.5-pro": "gemini-2.5-flash-lite"
   };
   const migratedModel = modelMap[settings.geminiModel];
 
@@ -252,7 +254,10 @@ chrome.storage.local.get(null, (storedSettings) => migrateModelSettings(storedSe
   applyUi(d.uiLanguage || 'ja'); 
   if (d.uiLanguage) document.getElementById('uiLanguage').value = d.uiLanguage;
   if (d.geminiApiKey) document.getElementById('apiKey').value = d.geminiApiKey;
-  if (d.geminiModel) document.getElementById('modelName').value = d.geminiModel;
+  const modelSelect = document.getElementById('modelName');
+  if (d.geminiModel && Array.prototype.some.call(modelSelect.options, (o) => o.value === d.geminiModel)) {
+    modelSelect.value = d.geminiModel;
+  }
   
   if (d.manualModel !== undefined && document.getElementById('manualModel')) {
       document.getElementById('manualModel').value = d.manualModel;

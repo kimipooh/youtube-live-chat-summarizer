@@ -9,6 +9,18 @@ function getThinkingFamily(model) {
   return 'none';
 }
 
+const MODELS_WITHOUT_MINIMAL_THINKING = ['gemini-3.8-flash', 'gemini-3.1-pro-preview'];
+
+function supportsMinimalThinkingLevel(model) {
+  const normalized = (model || '').toLowerCase().trim();
+  return !MODELS_WITHOUT_MINIMAL_THINKING.some((id) => normalized.startsWith(id));
+}
+
+function resolveThinkingLevel(model, level) {
+  if (getThinkingFamily(model) === 'gemini3' && level === 1 && !supportsMinimalThinkingLevel(model)) return 2;
+  return level;
+}
+
 function isThinkingDisplaySupported(model) {
   return getThinkingFamily(model) !== 'none';
 }
@@ -68,7 +80,8 @@ function updateHeader() {
     if (isThinkingSupported) {
         const levelMapJa = { 0: "API既定", 1: "最小", 2: "低", 3: "中", 4: "高" };
         const levelMapEn = { 0: "Default", 1: "Min", 2: "Low", 3: "Med", 4: "High" };
-        const levelStr = lang === 'ja' ? (levelMapJa[tLevel] || tLevel) : (levelMapEn[tLevel] || tLevel);
+        const resolvedLevel = resolveThinkingLevel(model, tLevel);
+        const levelStr = lang === 'ja' ? (levelMapJa[resolvedLevel] || resolvedLevel) : (levelMapEn[resolvedLevel] || resolvedLevel);
         thinkingText = (lang === 'ja' ? '思考: ' : 'Think: ') + levelStr;
     }
     

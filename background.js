@@ -19,13 +19,21 @@ function getThinkingFamily(model) {
   return 'none';
 }
 
+const MODELS_WITHOUT_MINIMAL_THINKING = ['gemini-3.8-flash', 'gemini-3.1-pro-preview'];
+
+function supportsMinimalThinkingLevel(model) {
+  const normalized = (model || '').toLowerCase().trim();
+  return !MODELS_WITHOUT_MINIMAL_THINKING.some((id) => normalized.startsWith(id));
+}
+
 function buildThinkingConfig(model, thinkingLevel) {
   const level = Number(thinkingLevel) || 0;
   const family = getThinkingFamily(model);
 
   if (family === 'gemini3') {
     const levelMap = { 1: 'minimal', 2: 'low', 3: 'medium', 4: 'high' };
-    return levelMap[level] ? { thinkingLevel: levelMap[level] } : null;
+    const resolvedLevel = level === 1 && !supportsMinimalThinkingLevel(model) ? 2 : level;
+    return levelMap[resolvedLevel] ? { thinkingLevel: levelMap[resolvedLevel] } : null;
   }
 
   if (family === 'gemini25flash') {
