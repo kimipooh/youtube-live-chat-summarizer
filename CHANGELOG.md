@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2026-05-22
+
+### Fixed
+- Removed development-only local Claude/Codex files from the packaged release archive.
+
 ## [1.1.0] - 2026-05-22
 
 ### Added
